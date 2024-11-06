@@ -27,13 +27,13 @@ These are almost always grouped together in batches of 8 bits, which together ma
 If we have $n$ bits, then we can store $2^{n}$ different numbers.
 So for one byte (8 bits) we can store $2^{8}$ = 256 different numbers, or for two bytes (16 bits) we can store $2^{16}$ = 65,536 different numbers.
 
-For simplicitly in this book we'll focus on grayscale, or single-channel images.
+For simplicity in this book we'll focus on grayscale, or single-channel images.
 These are images where each pixel stores a single value.
 Colour, or multi-channel images store multiple values per pixel (e.g., values for the red, green, and blue (RGB) components), and the same principles generally apply, just across multiple channels.
 
 
 That's a lot of words without a single image yet!
-Lets generate a random 16-bit 4 x 4 image as an exmaple to take us through the rest of this chapter
+Lets generate a random 16-bit 4 x 4 image as an example to take us through the rest of this chapter
 
 ```{code-cell}
 import matplotlib.pyplot as plt

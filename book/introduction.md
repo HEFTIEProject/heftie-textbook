@@ -1,6 +1,6 @@
 # Introduction
 
-Modern imaging datsets are big - really big!
+Modern imaging datasets are big - really big!
 As an example, the [Human Organ Atlas](https://human-organ-atlas.esrf.fr/) [^inspired] routinely generates datasets that are > 500 GB in size.
 For the average scientist, these datasets are too big to load into the available memory on their computer at once, raising the question: **how can we analyse huge imaging datasets**?
 
