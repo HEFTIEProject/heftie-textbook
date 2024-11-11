@@ -5,13 +5,12 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.11.5
+    jupytext_version: 1.16.4
 kernelspec:
-  display_name: Python 3
+  display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
-
 
 # Data formats
 
@@ -35,7 +34,7 @@ Colour, or multi-channel images store multiple values per pixel (e.g., values fo
 That's a lot of words without a single image yet!
 Lets generate a random 16-bit 4 x 4 image as an example to take us through the rest of this chapter
 
-```{code-cell}
+```{code-cell} ipython3
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -46,11 +45,19 @@ fig, ax = plt.subplots()
 ax.imshow(image, cmap="Grays", vmin=0, vmax=2**16);
 ```
 
-We can also look at what this looks like in computer memory:
-```{code-cell}
+We can also look at what this looks like in binary, which is how the image is stored in memory:
+
+```{code-cell} ipython3
 image_bytes = image.tobytes()
-print(image_bytes)
+
+print(f"{len(image_bytes)} bytes")
+for my_byte in image_bytes:
+    print(f'{my_byte:0>8b}', end=' ')
 ```
+
+Because we have a 16 pixel image, and each pixel is stored in 2 bytes (16 bits), as expected we have 16$\times$ 2 = 32 bytes. Above you can see the bits for each byte. This is the simplest but least space efficient way of storing data. In the next sub-section we'll explore ways to reduce the size of our data by compressing it.
+
++++
 
 ## Data compression
 - Brief overview of lossless/lossy compression
