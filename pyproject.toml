@@ -5,10 +5,11 @@ description = "A digital textbook for working with huge 3D imaging datasets"
 readme = "README.md"
 requires-python = "==3.12.*"
 dependencies = [
+    "imageio[tifffile]==2.36.0",
     "jupyter-book==1.0.3",
     "matplotlib==3.9.2",
     "numpy==2.1.3",
-    "sphinx==7.4.7"
+    "sphinx==7.4.7",
 ]
 
 [tool.setuptools]

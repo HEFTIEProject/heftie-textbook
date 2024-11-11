@@ -57,6 +57,35 @@ for my_byte in image_bytes:
 
 Because we have a 16 pixel image, and each pixel is stored in 2 bytes (16 bits), as expected we have 16$\times$ 2 = 32 bytes. Above you can see the bits for each byte. This is the simplest but least space efficient way of storing data. In the next sub-section we'll explore ways to reduce the size of our data by compressing it.
 
+## Saving images
+
+So far the image we've worked on has been stored in the random access memory (RAM) on our computer.
+RAM is volatile, which means it's erased when it loses power, so if we want to save our image or send it to someone else we have to write it to a file, or 'serialise' it.
+
+### 2D images
+Since images are 2D data, there are lots of different file formats we can save it to.
+Lets save it to a [TIFF file](https://www.adobe.com/creativecloud/file-types/image/raster/tiff-file.html), a commonly used image file format in bio-sciences.
+
+```{code-cell} ipython3
+import imageio.v3 as iio
+
+iio.imwrite("image_file.tiff", image, plugin='tifffile')
+```
+
+This saves a single .tiff file to disk.
+Because TIFF doesn't compress the data at all, we should expect the file to be at least 32 bytes big.
+Lets check:
+
+```{code-cell} ipython3
+import os.path
+
+filesize_bits = os.path.getsize("image_file.tiff")
+filesize_bytes = filesize_bits // 8
+print(f"File size: {filesize_bytes} B")
+```
+
+As expected the file is bigger than 32 bytes - the image itself takes up 32 bytes, and then other file metadata takes up 4 extra bytes on top of that.
+
 +++
 
 ## Data compression
