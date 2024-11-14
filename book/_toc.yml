@@ -5,4 +5,8 @@ format: jb-book
 root: home
 chapters:
 - file: introduction
-- file: data_storage
+- file: 1-storage
+- file: 2-creation
+- file: 3-remote
+- file: 4-processing
+- file: 5-visualising
