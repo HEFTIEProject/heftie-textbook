@@ -32,13 +32,13 @@ Colour, or multi-channel images store multiple values per pixel (e.g., values fo
 
 
 That's a lot of words without a single image yet!
-Lets generate a random 16-bit 4 x 4 image as an example to take us through the rest of this chapter
+Lets generate a random 8-bit 32 x 32 image as an example to take us through the rest of this chapter
 
 ```{code-cell} ipython3
 import matplotlib.pyplot as plt
 import numpy as np
 
-image = np.random.randint(low=0, high=2**16, size=(4, 4), dtype=np.uint16)
+image = np.random.randint(low=0, high=2**16, size=(32, 32), dtype=np.uint16)
 print(image)
 
 fig, ax = plt.subplots()
@@ -50,12 +50,16 @@ We can also look at what this looks like in binary, which is how the image is st
 ```{code-cell} ipython3
 image_bytes = image.tobytes()
 
-print(f"{len(image_bytes)} bytes")
-for my_byte in image_bytes:
+print(f"{len(image_bytes)} bytes total")
+print()
+print("First ten bytes:")
+for my_byte in image_bytes[:10]:
     print(f'{my_byte:0>8b}', end=' ')
+
+print("...")
 ```
 
-Because we have a 16 pixel image, and each pixel is stored in 2 bytes (16 bits), as expected we have 16$\times$ 2 = 32 bytes. Above you can see the bits for each byte. This is the simplest but least space efficient way of storing data. In the next sub-section we'll explore ways to reduce the size of our data by compressing it.
+Because we have a 1024 pixel image, and each pixel is stored in 1 byte (8 bits), we have a total of 1024$\times$1 = 32 bytes. Above you can see the bits for each byte. This is the simplest but least space efficient way of storing data. In the next sub-section we'll explore ways to reduce the size of our data by compressing it.
 
 ## Saving images
 
@@ -73,22 +77,77 @@ iio.imwrite("image_file.tiff", image, plugin='tifffile')
 ```
 
 This saves a single .tiff file to disk.
-Because TIFF doesn't compress the data at all, we should expect the file to be at least 32 bytes big.
+Because TIFF doesn't compress the data at all, we should expect the file to be at least 1024 bytes big.
 Lets check:
 
 ```{code-cell} ipython3
 import os.path
 
-filesize_bits = os.path.getsize("image_file.tiff")
-filesize_bytes = filesize_bits // 8
-print(f"File size: {filesize_bytes} B")
+print(f"File size: {os.path.getsize("image_file.tiff")} B")
 ```
 
-As expected the file is bigger than 32 bytes - the image itself takes up 32 bytes, and then other file metadata takes up 4 extra bytes on top of that.
+The file is slightly bigger than 2048 bytes - the image itself takes up 2048 bytes, and then other file metadata takes up 4 extra bytes on top of that.
 
 +++
 
 ## Data compression
-- Brief overview of lossless/lossy compression
-- Include read/write benchmarks
-- Talk about cost of read/write compression
+
+In the previous section we saved data to TIFF files, without any compression. This means the data stored in the file is exactly the same as the data in memory. This makes TIFF files very quick to read and write from, as the data doesn't need to be processed or transformed at all. 
+
+```{mermaid}
+    flowchart LR
+        Memory --> TIFF 
+        TIFF --> Memory 
+```
+
+If we have limited storage space however, we might want to compress the data somehow before writing it to a file. There are two different types of compression:
+
+- Lossless compression:
+- Lossy compression:
+
+A common example of lossless compresion is PNG files:
+
+```{code-cell} ipython3
+iio.imwrite("image_file.png", image)
+print(f"File size: {os.path.getsize("image_file.png")} B")
+```
+
+The PNG filesize is slightly smaller than the TIFF we saved with identical data. If we read the data back in from the PNG file, we still get exactly the same values back:
+
+```{code-cell} ipython3
+image_png_data = iio.imread("image_file.png")
+print("Recovered original data?", np.all(image_png_data == image))
+```
+
+The cost of compressing the data is adding another step when reading or writing the data to file
+
+```{mermaid}
+    flowchart LR
+        Memory --> comp --> PNG 
+        PNG --> comp --> Memory
+    
+    
+        comp["Compressor"]
+        PNG["PNG file"]
+        Memory["Data in memory"]
+```
+
++++
+
+If we want to compress the data further, we have to sacrifices some accuracy and use lossy compression. A common example of lossy compression is JPEG files. Here we'll save to a JPEG2000 file:
+
+```{code-cell} ipython3
+iio.imwrite("image_file.jp2", image, quality_layers=[2])
+print(f"File size: {os.path.getsize("image_file.jp2")} B")
+
+image_jp2_data = iio.imread("image_file.jp2")
+print("Recovered original data?", np.all(image_jp2_data == image))
+
+difference = image_jp2_data.astype(np.float32) - image.astype(np.float32)
+fig, ax = plt.subplots()
+im = ax.imshow(difference, cmap='RdBu')
+fig.colorbar(im)
+ax.set_title("Difference between original data and JPEG data");
+```
+
+TODO: add some simple timing benchmarks
