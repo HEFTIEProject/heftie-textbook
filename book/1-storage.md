@@ -105,7 +105,7 @@ If we have limited storage space however, we might want to compress the data som
 - Lossless compression:
 - Lossy compression:
 
-A common example of lossless compresion is PNG files:
+A common example of lossless compression is PNG files:
 
 ```{code-cell} ipython3
 iio.imwrite("image_file.png", image)
