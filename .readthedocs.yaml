@@ -3,11 +3,14 @@ build:
   os: ubuntu-22.04
   tools:
     python: "3.12"
+    nodejs: "16"
   jobs:
     pre_build:
       # Generate the Sphinx configuration for
       # this Jupyter Book so it builds.
       - "jupyter-book config sphinx book/"
+    post_install:
+      - npm install -g @mermaid-js/mermaid-cli
 
 # Dependencies required to build your docs
 python:
