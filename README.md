@@ -1,11 +1,12 @@
 # heftie-textbook
+
 A digital textbook for working with huge 3D imaging datasets
 
 > [!WARNING]
-> This book is still a work in progress - it might not make complete sense yet! Feedback is very welcome, by [opening a new issue](https://github.com/UCL-MSM-Bio/heftie-textbook/issues/new).
+> This book is still a work in progress - it might not make complete sense yet!
+> Feedback is very welcome, by [opening an issue](https://github.com/HEFTIEProject/heftie-textbook/issues/new) on our GitHub issue tracker.
 
 ![HEFTIE logo](book/images/heftie_logo.svg)
-
 
 ## Contributors
 
@@ -34,9 +35,7 @@ To build the book locally run:
 jupyter-book build book
 ```
 
-
 ## Funding
-
 
 This project is funded by the [OSCARS project](https://oscars-project.eu/), which has received funding from the European Commission’s Horizon Europe Research and Innovation programme under grant agreement No. 101129751.
 

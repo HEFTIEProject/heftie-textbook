@@ -390,7 +390,6 @@ dependencies = [
     { name = "jupyter-book" },
     { name = "matplotlib" },
     { name = "numpy" },
-    { name = "sphinx" },
     { name = "sphinxcontrib-mermaid" },
 ]
 
@@ -406,7 +405,6 @@ requires-dist = [
     { name = "jupyter-book", specifier = "==1.0.3" },
     { name = "matplotlib", specifier = "==3.9.2" },
     { name = "numpy", specifier = "==2.1.3" },
-    { name = "sphinx", specifier = "==7.4.7" },
     { name = "sphinxcontrib-mermaid", specifier = "==1.0.0" },
 ]
 

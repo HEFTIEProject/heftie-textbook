@@ -3,9 +3,13 @@
 Welcome to the textbook for working with huge 3D imaging datasets!
 This textbook explains how to work with huge 3D imaging datasets using modern data formats.
 
+> This book is still a work in progress - it might not make complete sense yet!
+> Feedback is very welcome, by [opening an issue](https://github.com/HEFTIEProject/heftie-textbook/issues/new) on our GitHub issue tracker.
 
 ## Contents
+
 ```{tableofcontents}
+
 ```
 
 ## Acknowledgements
