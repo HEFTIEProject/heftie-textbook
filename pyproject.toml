@@ -12,6 +12,8 @@ dependencies = [
     "numpy==2.2.4",
     "sphinxcontrib-mermaid==1.0.0",
     "zarr==2.18.4",
+    "ngff-zarr==0.12.1",
+    "rich==13.9.4",
 ]
 
 [tool.setuptools]
