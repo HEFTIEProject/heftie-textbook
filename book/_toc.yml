@@ -4,9 +4,10 @@
 format: jb-book
 root: home
 chapters:
-- file: introduction
-- file: 1-storage
-- file: 2-creation
-- file: 3-remote
-- file: 4-processing
-- file: 5-visualising
+  - file: introduction
+  - file: 1-storage
+  - file: 2-creation
+  - file: 3-remote
+  - file: 4-processing
+  - file: 5-visualising
+  - file: appendices
