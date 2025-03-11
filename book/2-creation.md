@@ -15,9 +15,7 @@ kernelspec:
 # Creating chunked datasets
 
 ```{code-cell} ipython3
-from bokeh.plotting import figure, show, output_notebook
-
-output_notebook()
+import plotly.express as px
 ```
 
 ```{code-cell} ipython3
@@ -27,11 +25,8 @@ heart_image = load_heart_data(array_type='numpy')
 ```
 
 ```{code-cell} ipython3
-p = figure()
-p.x_range.range_padding = p.y_range.range_padding = 0
-p.image(image=[heart_image[:, :, 70]], x=0, y=0, dw=heart_image.shape[0], dh=heart_image.shape[1], palette='Greys256'
-       )
-show(p)
+fig = px.imshow(heart_image, animation_frame=2, binary_string=True)
+fig
 ```
 
 ```{code-cell} ipython3
