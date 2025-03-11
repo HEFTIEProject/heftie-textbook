@@ -1,6 +1,9 @@
 book/_build
-*checkpoint.md
+*.ipynb_checkpoints
+*.pyc
 
 book/image_file.tiff
 book/image_file.png
 book/image_file.jp2
+
+*.zarr
