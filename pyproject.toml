@@ -5,6 +5,7 @@ description = "A digital textbook for working with huge 3D imaging datasets"
 readme = "README.md"
 requires-python = "==3.12.*"
 dependencies = [
+    "bokeh==3.6.3",
     "imageio[tifffile]==2.37.0",
     "jupyter-book==1.0.4",
     "matplotlib==3.10.1",
