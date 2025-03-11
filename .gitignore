@@ -4,3 +4,5 @@ book/_build
 book/image_file.tiff
 book/image_file.png
 book/image_file.jp2
+
+*.zarr
