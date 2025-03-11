@@ -9,7 +9,8 @@ dependencies = [
     "jupyter-book==1.0.4",
     "matplotlib==3.10.1",
     "numpy==2.2.3",
-    "sphinxcontrib-mermaid==1.0.0"
+    "sphinxcontrib-mermaid==1.0.0",
+    "zarr==3.0.5",
 ]
 
 [tool.setuptools]
