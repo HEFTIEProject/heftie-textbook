@@ -13,3 +13,9 @@ kernelspec:
 ---
 
 # Creating chunked datasets
+
+```{code-cell} ipython3
+from data_helpers import load_heart_data
+
+heart_image = load_heart_data(array_type='numpy')
+```
