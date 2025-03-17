@@ -8,16 +8,12 @@ dependencies = [
     "imageio[tifffile]==2.37.0",
     "jupyter-book==1.0.4",
     "matplotlib==3.10.1",
-    "numpy==2.2.3",
-    "sphinxcontrib-mermaid==1.0.0",
     "zarr==2.18.4",
+    "numpy==2.2.4",
 ]
 
 [tool.setuptools]
 packages = []
 
 [dependency-groups]
-dev = [
-  "jupyterlab==4.3.0",
-  "jupytext==1.16.4"
-]
+dev = ["jupyterlab==4.3.0", "jupytext==1.16.4"]
