@@ -30,7 +30,7 @@ repository:
 html:
   use_issues_button: true
   use_repository_button: true
-  announcement: "⚠️ This book is still a work in progress! Feedback is welcome on our [issue tracker](https://github.com/HEFTIEProject/heftie-textbook/issues)."
+  announcement: "⚠️ This book is still a work in progress! Feedback is welcome on our <a href='https://github.com/HEFTIEProject/heftie-textbook/issues'>issue tracker</a> ⚠️"
 sphinx:
   extra_extensions:
     - sphinxcontrib.mermaid
