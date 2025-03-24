@@ -175,6 +175,7 @@ In the example above this would result in 8480 individual 2D images, each with s
 This is illustrated in the image below - each file is represented with a different colour.
 
 ```{code-cell} ipython3
+:hide-input: true
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d')
 
@@ -204,6 +205,8 @@ To get this data this we would have to all 32 2D images that contain the cube.
 This is illustrated in the following diagram:
 
 ```{code-cell} ipython3
+:hide-input: true
+
 from matplotlib.lines import Line2D
 
 fig = plt.figure()
