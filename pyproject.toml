@@ -8,8 +8,9 @@ dependencies = [
     "imageio[tifffile]==2.37.0",
     "jupyter-book==1.0.4",
     "matplotlib==3.10.1",
-    "zarr==2.18.4",
     "numpy==2.2.4",
+    "sphinxcontrib-mermaid==1.0.0",
+    "zarr==2.18.4",
 ]
 
 [tool.setuptools]
