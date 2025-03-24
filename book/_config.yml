@@ -34,3 +34,6 @@ html:
 sphinx:
   extra_extensions:
     - sphinxcontrib.mermaid
+  config:
+    # Show execution errors in the terminal
+    nb_execution_show_tb: True
