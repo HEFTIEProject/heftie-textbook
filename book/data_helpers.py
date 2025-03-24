@@ -12,6 +12,6 @@ def load_heart_data(array_type: Literal["numpy"]):
         )
     )
     if array_type == "numpy":
-        return np.asarray(arr_zarr[:])
+        return np.array(arr_zarr[:])
     else:
         raise ValueError(f"Did not recognise {array_type=}")
