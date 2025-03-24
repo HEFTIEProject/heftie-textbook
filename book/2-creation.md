@@ -15,20 +15,18 @@ kernelspec:
 # Creating chunked datasets
 
 ```{code-cell} ipython3
-import plotly.express as px
-```
+import matplotlib.pyplot as plt
 
-```{code-cell} ipython3
 from data_helpers import load_heart_data
+```
 
+```{code-cell} ipython3
 heart_image = load_heart_data(array_type='numpy')
+heart_image.shape
 ```
 
 ```{code-cell} ipython3
-fig = px.imshow(heart_image, animation_frame=2, binary_string=True)
-fig
-```
-
-```{code-cell} ipython3
-
+fig, ax = plt.subplots()
+ax.imshow(heart_image[:, :, 70], cmap='Grays_r')
+ax.set_title("z = 70")
 ```

@@ -9,7 +9,6 @@ dependencies = [
     "jupyter-book==1.0.4",
     "matplotlib==3.10.1",
     "numpy==2.2.3",
-    "plotly==6.0.0",
     "sphinxcontrib-mermaid==1.0.0",
     "zarr==2.18.4",
 ]
