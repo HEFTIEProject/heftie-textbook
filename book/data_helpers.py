@@ -10,11 +10,7 @@ def load_heart_data(array_type: Literal["numpy"]):
     if not data_path.exists():
         raise FileNotFoundError(f"{data_path} does not exist.")
 
-    arr_zarr = zarr.open_array(
-        store=zarr.storage.DirectoryStore(
-            Path(__file__).parent / "data" / "hoa_heart.zarr"
-        )
-    )
+    arr_zarr = zarr.open_array(store=data_path)
     if array_type == "numpy":
         return np.array(arr_zarr[:])
     else:
