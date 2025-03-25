@@ -199,8 +199,6 @@ This is illustrated below - to get the data values at just 8 voxels (the red cub
 ```{code-cell} ipython3
 :hide-input: true
 
-from matplotlib.lines import Line2D
-
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d')
 
@@ -225,6 +223,7 @@ ax.legend(custom_lines, [
     'All data',
     f'Requested data ({np.sum(voxels_request)} voxels)',
     f'Read data ({np.sum(voxels_read)} voxels)'])
+ax.set_title("Chunk shape = (10, 10, 1)")
 ```
 
 This approach described above to compressing and saving 3D images as stacks of 2D images works well for small to medium sized 2D images, when reading each 2D image is fast.
@@ -249,7 +248,7 @@ For 2., we'll look at how the `ome-zarr` format extends `zarr` to provide a way 
 
 +++
 
-### `zarr`
+### zarr
 
 In the example above where we stored 3D data as a series of 2D image files, the *chunk shape* of our data was `(nx, ny, 1)`.
 This just means each file that makes up the full dataset contains an array that has shape `(nx, ny, 1)`.
@@ -266,9 +265,41 @@ color_chunk_figure(image_shape=(10, 10, 20), chunk_shape=(5, 5, 10))
 Or we could choose a different shape, with smaller chunks:
 
 ```{code-cell} ipython3
-color_chunk_figure(image_shape=(10, 10, 20), chunk_shape=(2, 2, 4))
+color_chunk_figure(image_shape=(10, 10, 20), chunk_shape=(2, 2, 3))
 ```
+
+Note that the chunk shape doesn't have to exactly divide the image shape - in the case where it doesn't, some of the chunks on the edge are just slightly smaller than the 'full sized' chunks.
+
++++
+
+Now if we want to load the same 8 voxels of data, we need to load 8 chunks, but in total these contain far fewer voxels to read - 96, versus the previous 200 when we were storing the data in 2D images.
 
 ```{code-cell} ipython3
+fig = plt.figure()
+ax = fig.add_subplot(projection='3d')
 
+x, y, z = np.indices((10, 10, 20))
+
+voxels = np.ones(x.shape)
+voxels_request = (x < 4) & (x >= 2) & (y < 5) & (y >= 3) & (z < 4) & (z >= 2)
+voxels_read = (x < 6) & (x >= 2) & (y < 6) & (y >= 2) & (z < 6) & (z >= 0) 
+
+all_vox = ax.voxels(voxels, alpha=0.2, edgecolors='black', linewidths=0.05, shade=False)
+req_vox = ax.voxels(voxels_request, edgecolors='black', linewidths=0.5, facecolors='tab:red', alpha=1, shade=False);
+read_vox = ax.voxels(voxels_read, edgecolors='black', linewidths=0.5, facecolors='tab:orange', alpha=0.3, shade=False);
+
+ax.axis('off')
+ax.set_aspect('equal')
+
+custom_lines = [
+    list(all_vox.values())[0],
+    list(req_vox.values())[0],
+    list(read_vox.values())[0]]
+ax.legend(custom_lines, [
+    'All data',
+    f'Requested data ({np.sum(voxels_request)} voxels)',
+    f'Read data ({np.sum(voxels_read)} voxels)'])
+ax.set_title("Chunk shape = (2, 2, 3)")
 ```
+
+### OME-Zarr
