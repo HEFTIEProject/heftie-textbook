@@ -11,12 +11,16 @@ build:
       - "jupyter-book config sphinx book/"
     post_install:
       - npm install -g @mermaid-js/mermaid-cli
+      # Import matplotlib to build the font cache
+      # Otherwise, the first time it's imported cell execution
+      # can timeout
+      - python -c "import matplotlib"
 
 # Dependencies required to build your docs
 python:
-   install:
-     - method: pip
-       path: .
+  install:
+    - method: pip
+      path: .
 
 sphinx:
   builder: html
