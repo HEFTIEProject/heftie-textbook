@@ -162,47 +162,39 @@ ax.set_title("Difference between original data and JPEG data");
 ```
 
 ## Storing large 3D data
-
-### Motivating new file formats
-
-The approaches described above to compressing and saving images work well for small to medium sized 2D images.
-But what about large 3D data?
-As an example, [one high resolution scan of a human heart](https://human-organ-atlas.esrf.fr/datasets/1659197537) from the Human Organ Atlas is 16 bit and has dimensions 7614 x 7614 x 8480.
-That's 491,611,006,080 voxels (almost 500 billion), and 983 GB of data.
-
 One way of storing 3D data is to save it as a stack of 2D images.
-In the example above this would result in 8480 individual 2D images, each with size 7614 x 7614.
+As an example, if we have an image that has shape (10, 10, 20), we could save it to 20 2D image files, each of which has shape (10, 10).
 This is illustrated in the image below - each file is represented with a different colour.
 
 ```{code-cell} ipython3
-:hide-input: true
-fig = plt.figure()
-ax = fig.add_subplot(projection='3d')
+import matplotlib.figure
 
-nz = 20
-for i in range(nz):
-    voxels = np.zeros((10, 10, nz))
-    voxels[:, :, i] = 1
-    ax.voxels(voxels, edgecolors='black', linewidths=0.5, alpha=0.4, shade=False);
-
-ax.set_aspect("equal")
-ax.axis('off');
+def color_chunk_figure(*, image_shape: tuple[int, int, int], chunk_shape: tuple[int, int, int]) -> matplotlib.figure.Figure:
+    fig = plt.figure()
+    ax = fig.add_subplot(projection='3d')
+    
+    for x in range(0, image_shape[0], chunk_shape[0]):
+        for y in range(0, image_shape[1], chunk_shape[1]):
+            for z in range(0, image_shape[2], chunk_shape[2]):
+                voxels = np.zeros(image_shape)
+                voxels[x:x+chunk_shape[0], y:y+chunk_shape[1], z:z+chunk_shape[2]] = 1
+                ax.voxels(voxels, edgecolors='black', linewidths=0.5, alpha=0.9, shade=False);
+    
+    ax.set_aspect("equal")
+    ax.axis('off');
+    ax.set_title(f'Image shape = {image_shape}\nChunk shape = {chunk_shape}')
 ```
 
-A single full slice of this 3D dataset is much higher resolution than a typical computer display (I'm currently writing this on a 2560 x 1664 laptop screen).
-This means when visualising large data, we either way to look at:
+```{code-cell} ipython3
+color_chunk_figure(image_shape=(10, 10, 20), chunk_shape=(10, 10, 1))
+```
 
-1. A zoomed in full-resolution view
-2. A zoomed out lower resolution view
+One way of thinking about this is that we are splitting our 3D image up into *chunks*, and each chunk is saved to a single file.
+In this case each chunk has shape `(nx, ny, 1)`, where `nx` and `ny` is the size of our 3D image in the x- and y- dimensions.
 
-These two requirements have spawned new data formats specifically designed to address these challenges.
-To start with, we'll look at how the `zarr` data format allows us to load small subsets of data at a time, speeding up data access when we only want to look at some of the data.
 
-### The `zarr` data format
-
-Consider 3D data stored as stacks of 2D images, and say we want to look at a small (32 x 32 x 32) cube of the data.
-To get this data this we would have to all 32 2D images that contain the cube.
-This is illustrated in the following diagram:
+If we want to fetch a small cube of data, say shape `(2, 2, 2)`, then we have to read and de-compress the two files that contain this data, but then we end up throwing away most of the data we've read in.
+This is illustrated below - to get the data values at just 8 voxels (the red cubes), we have to read in 200 voxels in total (the orange cubes).
 
 ```{code-cell} ipython3
 :hide-input: true
@@ -235,6 +227,48 @@ ax.legend(custom_lines, [
     f'Read data ({np.sum(voxels_read)} voxels)'])
 ```
 
-For small datasets this isn't too much of an issue, but with huge datasets reading in whole 2D slices and then throwing away most of the data is very wasteful.
+This approach described above to compressing and saving 3D images as stacks of 2D images works well for small to medium sized 2D images, when reading each 2D image is fast.
+But what about large 3D data?
+As an example, [one high resolution scan of a human heart](https://human-organ-atlas.esrf.fr/datasets/1659197537) from the Human Organ Atlas is 16 bit and has dimensions 7614 x 7614 x 8480.
+That's 491,611,006,080 voxels (almost 500 billion), and 983 GB of data.
 
-To solve this, zarr saves data in _chunks_ that can have an arbitrary shape.
+**Add timings for reading in a large JPEG2000 image**
+
+As well as being slow to read in, slices of such large datasets are often much bigger than we ever want.
+As an example, I'm currently writing this text on a laptop with a screen resolution of 2560 x 1664.
+Even if I read in a full resolution 7164 x 7164 image, my computer can't display all the pixels.
+
+So for a better data format we want the following features:
+
+1. Less wasted effort when reading in small subsets of data
+2. Some way of storing low-resolution copies of the original image, for faster loading when zooomed out
+
+These two requirements have spawned new data formats specifically designed to address these challenges.
+For 1., we'll look at how the `zarr` format allows us to load load small subsets of data at a time.
+For 2., we'll look at how the `ome-zarr` format extends `zarr` to provide a way of storing multiple copies of the same image at different resolutions.
+
++++
+
+### `zarr`
+
+In the example above where we stored 3D data as a series of 2D image files, the *chunk shape* of our data was `(nx, ny, 1)`.
+This just means each file that makes up the full dataset contains an array that has shape `(nx, ny, 1)`.
+If we want to read a single voxel, this is the minimum amount of data we need to load and de-compress.
+
+The key innovation of `zarr` is allowing the chunk size to be chosen when creating the data.
+As an example, for a (10, 10, 20) shaped image, we could choose a chunk shape of (5, 5, 10).
+This would split the original image up into 8 individual files, illustrated below with different colors:
+
+```{code-cell} ipython3
+color_chunk_figure(image_shape=(10, 10, 20), chunk_shape=(5, 5, 10))
+```
+
+Or we could choose a different shape, with smaller chunks:
+
+```{code-cell} ipython3
+color_chunk_figure(image_shape=(10, 10, 20), chunk_shape=(2, 2, 4))
+```
+
+```{code-cell} ipython3
+
+```
