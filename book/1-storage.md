@@ -302,4 +302,34 @@ ax.legend(custom_lines, [
 ax.set_title("Chunk shape = (2, 2, 3)")
 ```
 
+Much easier and quicker to load!
+In Chapter 2 we'll show how to create a `zarr` dataset, and see how the actual files are layed out.
+
+To summarise this section, `zarr` is a file format that can be used to store 3D imaging data that breaks down the image into (configurably sized) chunks. Each chunk is saved to it's own file, reducing the amount of data reading needed when only viewing a small portion of the image.
+
++++
+
 ### OME-Zarr
+
++++
+
+We've seen how `zarr` solves the problem of viewing zoomed in high-resolution fields of view of our image. But what about viewing zoomed out overviews?
+
+```{code-cell} ipython3
+fig = plt.figure()
+original_res = np.array([10, 10, 20])
+for i in range(3):
+    ax = fig.add_subplot(1, 3, i+1, projection='3d')
+
+    bin_factor = 2**i
+    x, y, z = np.indices(np.ceil(original_res / bin_factor).astype(int).tolist())
+    voxels = np.ones(x.shape)
+    all_vox = ax.voxels(voxels, alpha=1, edgecolors='black', linewidths=1, shade=False)
+    ax.axis('off')
+    ax.set_aspect('equal')
+    ax.set_title(f"Bin-by-{bin_factor}")
+```
+
+```{code-cell} ipython3
+
+```
