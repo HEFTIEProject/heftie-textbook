@@ -303,7 +303,7 @@ ax.set_title("Chunk shape = (2, 2, 3)")
 ```
 
 Much easier and quicker to load!
-In Chapter 2 we'll show how to create a `zarr` dataset, and see how the actual files are layed out.
+In Chapter 2 we'll show how to create a `zarr` dataset, and see how the actual files are laid out.
 
 To summarise this section, `zarr` is a file format that can be used to store 3D imaging data that breaks down the image into (configurably sized) chunks. Each chunk is saved to it's own file, reducing the amount of data reading needed when only viewing a small portion of the image.
 
