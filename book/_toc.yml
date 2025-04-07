@@ -4,7 +4,6 @@
 format: jb-book
 root: home
 chapters:
-- file: introduction
 - file: 1-storage
 - file: 2-creation
 - file: 3-remote
