@@ -313,7 +313,12 @@ To summarise this section, `zarr` is a file format that can be used to store 3D 
 
 +++
 
-We've seen how `zarr` solves the problem of viewing zoomed in high-resolution fields of view of our image. But what about viewing zoomed out overviews?
+We've seen how `zarr` solves the problem of viewing zoomed in high-resolution fields of view of our image. But what about viewing zoomed out views of the whole dataset?
+In this case loading the full resolution data would more often be not be wasteful because their shape is larger than the screen that they're being viewed on.
+As an example, the laptop I'm writing this on has a resolution of 2560 x 1664 and the full resolution shape of an typical dataset from the Human Organ Atlas is 7000 x 7000.
+
+`OME-Zarr` solves this by providing a data format that stores both the original full resolution image as a Zarr array, and successively downsampled versions of the same dataset alongside as other Zarr arrays.
+This is called a *multiscale image*.
 
 ```{code-cell} ipython3
 fig = plt.figure()
@@ -328,8 +333,11 @@ for i in range(3):
     ax.axis('off')
     ax.set_aspect('equal')
     ax.set_title(f"Bin-by-{bin_factor}")
+
+fig.suptitle("OME-Zarr data storage")
+fig.tight_layout()
 ```
 
-```{code-cell} ipython3
-
-```
+Using a multiscale image means that if you're viewing the whole zoomed out image you can load a smaller low resolution copy of the image.
+As you zoom in, data from the higher resolutions is successively loaded.
+If you're familiar with Google maps it works on a similar principal - as you zoom in, more detail is loaded in the location you're viewing.
