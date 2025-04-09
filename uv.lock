@@ -228,6 +228,15 @@ wheels = [
 ]
 
 [[package]]
+name = "cloudpickle"
+version = "3.1.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/52/39/069100b84d7418bc358d81669d5748efb14b9cceacd2f9c75f550424132f/cloudpickle-3.1.1.tar.gz", hash = "sha256:b216fa8ae4019d5482a8ac3c95d8f6346115d8835911fd4aefd1a445e4242c64", size = 22113 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/7e/e8/64c37fadfc2816a7701fa8a6ed8d87327c7d54eacfbfb6edab14a2f2be75/cloudpickle-3.1.1-py3-none-any.whl", hash = "sha256:c8c5a44295039331ee9dad40ba100a9c7297b6f988e50e87ccdf3765a668350e", size = 20992 },
+]
+
+[[package]]
 name = "colorama"
 version = "0.4.6"
 source = { registry = "https://pypi.org/simple" }
@@ -276,6 +285,29 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/a9/95/a3dbbb5028f35eafb79008e7522a75244477d2838f38cbb722248dabc2a8/cycler-0.12.1.tar.gz", hash = "sha256:88bb128f02ba341da8ef447245a9e138fae777f6a23943da4540077d3601eb1c", size = 7615 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/e7/05/c19819d5e3d95294a6f5947fb9b9629efb316b96de511b418c53d245aae6/cycler-0.12.1-py3-none-any.whl", hash = "sha256:85cef7cff222d8644161529808465972e51340599459b8ac3ccbac5a854e0d30", size = 8321 },
+]
+
+[[package]]
+name = "dask"
+version = "2025.1.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "click" },
+    { name = "cloudpickle" },
+    { name = "fsspec" },
+    { name = "packaging" },
+    { name = "partd" },
+    { name = "pyyaml" },
+    { name = "toolz" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/ff/41/43eb54e0f6d1ba971d5adcad8f0862b327af6a2041aa134acbcec630ad43/dask-2025.1.0.tar.gz", hash = "sha256:bb807586ff20f0f59f3d36fe34eb4a95f75a1aae2a775b521de6dd53727d2063", size = 10758681 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/91/a0/016d956a3fec193e3a5b466ca912944669c18dccc736b64a9e28ccdcc5f7/dask-2025.1.0-py3-none-any.whl", hash = "sha256:db86220c8d19bdf464cbe11a87a2c8f5d537acf586bb02eed6d61a302af5c2fd", size = 1371235 },
+]
+
+[package.optional-dependencies]
+array = [
+    { name = "numpy" },
 ]
 
 [[package]]
@@ -384,6 +416,15 @@ wheels = [
 ]
 
 [[package]]
+name = "fsspec"
+version = "2024.12.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/ee/11/de70dee31455c546fbc88301971ec03c328f3d1138cfba14263f651e9551/fsspec-2024.12.0.tar.gz", hash = "sha256:670700c977ed2fb51e0d9f9253177ed20cbde4a3e5c0283cc5385b5870c8533f", size = 291600 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/de/86/5486b0188d08aa643e127774a99bac51ffa6cf343e3deb0583956dca5b22/fsspec-2024.12.0-py3-none-any.whl", hash = "sha256:b520aed47ad9804237ff878b504267a3b0b441e97508bd6d2d8774e3db85cee2", size = 183862 },
+]
+
+[[package]]
 name = "greenlet"
 version = "3.1.1"
 source = { registry = "https://pypi.org/simple" }
@@ -417,7 +458,9 @@ dependencies = [
     { name = "imageio", extra = ["tifffile"] },
     { name = "jupyter-book" },
     { name = "matplotlib" },
+    { name = "ngff-zarr" },
     { name = "numpy" },
+    { name = "rich" },
     { name = "sphinxcontrib-mermaid" },
     { name = "zarr" },
 ]
@@ -433,7 +476,9 @@ requires-dist = [
     { name = "imageio", extras = ["tifffile"], specifier = "==2.37.0" },
     { name = "jupyter-book", specifier = "==1.0.4" },
     { name = "matplotlib", specifier = "==3.10.1" },
+    { name = "ngff-zarr", specifier = "==0.12.1" },
     { name = "numpy", specifier = "==2.2.4" },
+    { name = "rich", specifier = "==13.9.4" },
     { name = "sphinxcontrib-mermaid", specifier = "==1.0.0" },
     { name = "zarr", specifier = "==2.18.4" },
 ]
@@ -522,6 +567,15 @@ wheels = [
 ]
 
 [[package]]
+name = "importlib-resources"
+version = "6.5.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/cf/8c/f834fbf984f691b4f7ff60f50b514cc3de5cc08abfc3295564dd89c5e2e7/importlib_resources-6.5.2.tar.gz", hash = "sha256:185f87adef5bcc288449d98fb4fba07cea78bc036455dd44c5fc4a2fe78fed2c", size = 44693 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a4/ed/1f1afb2e9e7f38a545d628f864d562a5ae64fe6f7a10e28ffb9b185b4e89/importlib_resources-6.5.2-py3-none-any.whl", hash = "sha256:789cfdc3ed28c78b67a06acb8126751ced69a3d5f79c095a98298cd8a760ccec", size = 37461 },
+]
+
+[[package]]
 name = "ipykernel"
 version = "6.29.5"
 source = { registry = "https://pypi.org/simple" }
@@ -575,6 +629,60 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/7c/1a/3c8edc664e06e6bd06cce40c6b22da5f1429aa4224d0c590f3be21c91ead/isoduration-20.11.0.tar.gz", hash = "sha256:ac2f9015137935279eac671f94f89eb00584f940f5dc49462a0c4ee692ba1bd9", size = 11649 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/7b/55/e5326141505c5d5e34c5e0935d2908a74e4561eca44108fbfb9c13d2911a/isoduration-20.11.0-py3-none-any.whl", hash = "sha256:b2904c2a4228c3d44f409c8ae8e2370eb21a26f7ac2ec5446df141dde3452042", size = 11321 },
+]
+
+[[package]]
+name = "itkwasm"
+version = "1.0b186"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "numpy" },
+    { name = "platformdirs", marker = "sys_platform != 'emscripten'" },
+    { name = "typing-extensions" },
+    { name = "wasmtime", marker = "sys_platform != 'emscripten'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/61/52/614ec09ae2b9da59872c9f38edff4c2d30ab099a2483974c1b6064fe0ab0/itkwasm-1.0b186.tar.gz", hash = "sha256:6e0e365ae2051324c1e33a4f7d4b9a70a86aec4fe01e0a51bfbe7007c0a8390b", size = 3956538 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/36/62/45583cea546dbce0648bf55f9255e27024c918bdef7778a68466d10e565a/itkwasm-1.0b186-py3-none-any.whl", hash = "sha256:6bc77e017dfb31f923f2dfd9e5c3553e5aa680f4ccfb3a1687b206e0573be485", size = 28811 },
+]
+
+[[package]]
+name = "itkwasm-downsample"
+version = "1.5.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "itkwasm" },
+    { name = "itkwasm-downsample-emscripten", marker = "sys_platform == 'emscripten'" },
+    { name = "itkwasm-downsample-wasi", marker = "sys_platform != 'emscripten'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/89/1c/a88c9daed718a139745ab0f7ab79a15c00fdea375d3ef1cc31ea3e32ee27/itkwasm_downsample-1.5.0.tar.gz", hash = "sha256:4ed2e08cbcdb232fb6e651b9790e11af4998cbbbf42d738906204221fc3b30e5", size = 13687 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/17/2f/09796447bc9775b8fff4895bf09af29f6b56b2318427978f699b2c78d489/itkwasm_downsample-1.5.0-py3-none-any.whl", hash = "sha256:b93b5be62444b0a67849504b4b6080254ccd0d9fe01de884a3db860470a8c895", size = 7673 },
+]
+
+[[package]]
+name = "itkwasm-downsample-emscripten"
+version = "1.5.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "itkwasm" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/8e/6e/b01fcd198254523345cbcc00832864bc2d7e39c5a6073093bea92607bc1c/itkwasm_downsample_emscripten-1.5.0.tar.gz", hash = "sha256:8e9e5986e9663829d8181b04c290ae7879e6ca9d273bc1456088b90202e0e993", size = 89623 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/9e/61/b6be867819a245e82945d68f877a14f9af159e51e1289dc21f4db4a74018/itkwasm_downsample_emscripten-1.5.0-py3-none-any.whl", hash = "sha256:1ada00dc47ff5c9c1864f4f64788e92445165de05eac611c887bdf70c22127d4", size = 91779 },
+]
+
+[[package]]
+name = "itkwasm-downsample-wasi"
+version = "1.5.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "importlib-resources" },
+    { name = "itkwasm" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/07/fa/2c30aeb4d589aeba0ce853238158ddd81a5426dffd4605383f4a3b26f4bb/itkwasm_downsample_wasi-1.5.0.tar.gz", hash = "sha256:a53e986e347cc3ea438f13aaca7e4229494f9fea84f7125c340570de44f7e03c", size = 5702900 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b5/72/bbf2913ea470e5fe8750d258363cee5f077b5ef5c9f8d953b2c8e618e68e/itkwasm_downsample_wasi-1.5.0-py3-none-any.whl", hash = "sha256:6066bf1d0b265dfde2c45f51e05c1bb21181a38c0edc39f6f54df073eaa505b7", size = 5751779 },
 ]
 
 [[package]]
@@ -922,6 +1030,15 @@ wheels = [
 ]
 
 [[package]]
+name = "locket"
+version = "1.0.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/2f/83/97b29fe05cb6ae28d2dbd30b81e2e402a3eed5f460c26e9eaa5895ceacf5/locket-1.0.0.tar.gz", hash = "sha256:5c0d4c052a8bbbf750e056a8e65ccd309086f4f0f18a2eac306a8dfa4112a632", size = 4350 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/db/bc/83e112abc66cd466c6b83f99118035867cecd41802f8d044638aa78a106e/locket-1.0.0-py2.py3-none-any.whl", hash = "sha256:b6c819a722f7b6bd955b80781788e4a66a55628b858d347536b7e81325a3a5e3", size = 4398 },
+]
+
+[[package]]
 name = "markdown-it-py"
 version = "3.0.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1122,6 +1239,28 @@ wheels = [
 ]
 
 [[package]]
+name = "ngff-zarr"
+version = "0.12.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "dask", extra = ["array"] },
+    { name = "importlib-resources" },
+    { name = "itkwasm" },
+    { name = "itkwasm-downsample" },
+    { name = "numpy" },
+    { name = "platformdirs" },
+    { name = "psutil", marker = "sys_platform != 'emscripten'" },
+    { name = "rich" },
+    { name = "rich-argparse" },
+    { name = "typing-extensions" },
+    { name = "zarr" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/c6/03/a7abb71d60ac5adafd22b2b49d93aad84f230cafbfb67066cbb581a4de0c/ngff_zarr-0.12.1.tar.gz", hash = "sha256:e8f6a45196e22d95870bcc22906daab5cef60149f279de094faa27893a44eefe", size = 1333068 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/d9/87/1e17ab364095075248edf2abadc1e7e7809a722e5fe61eb2af732b26e9f7/ngff_zarr-0.12.1-py3-none-any.whl", hash = "sha256:8961573a841e6e82650a7c9c3e084f9a430ab86cbeb2c347012394632581b86f", size = 69205 },
+]
+
+[[package]]
 name = "notebook-shim"
 version = "0.2.4"
 source = { registry = "https://pypi.org/simple" }
@@ -1201,6 +1340,19 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/66/94/68e2e17afaa9169cf6412ab0f28623903be73d1b32e208d9e8e541bb086d/parso-0.8.4.tar.gz", hash = "sha256:eb3a7b58240fb99099a345571deecc0f9540ea5f4dd2fe14c2a99d6b281ab92d", size = 400609 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/c6/ac/dac4a63f978e4dcb3c6d3a78c4d8e0192a113d288502a1216950c41b1027/parso-0.8.4-py2.py3-none-any.whl", hash = "sha256:a418670a20291dacd2dddc80c377c5c3791378ee1e8d12bffc35420643d43f18", size = 103650 },
+]
+
+[[package]]
+name = "partd"
+version = "1.4.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "locket" },
+    { name = "toolz" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/b2/3a/3f06f34820a31257ddcabdfafc2672c5816be79c7e353b02c1f318daa7d4/partd-1.4.2.tar.gz", hash = "sha256:d022c33afbdc8405c226621b015e8067888173d85f7f5ecebb3cafed9a20f02c", size = 21029 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/71/e7/40fb618334dcdf7c5a316c0e7343c5cd82d3d866edc100d98e29bc945ecd/partd-1.4.2-py3-none-any.whl", hash = "sha256:978e4ac767ec4ba5b86c6eaa52e5a2a3bc748a2ca839e8cc798f1cc6ce6efb0f", size = 18905 },
 ]
 
 [[package]]
@@ -1496,6 +1648,31 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/da/88/f270de456dd7d11dcc808abfa291ecdd3f45ff44e3b549ffa01b126464d0/rfc3986_validator-0.1.1.tar.gz", hash = "sha256:3d44bde7921b3b9ec3ae4e3adca370438eccebc676456449b145d533b240d055", size = 6760 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/9e/51/17023c0f8f1869d8806b979a2bffa3f861f26a3f1a66b094288323fba52f/rfc3986_validator-0.1.1-py2.py3-none-any.whl", hash = "sha256:2f235c432ef459970b4306369336b9d5dbdda31b510ca1e327636e01f528bfa9", size = 4242 },
+]
+
+[[package]]
+name = "rich"
+version = "13.9.4"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "markdown-it-py" },
+    { name = "pygments" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/ab/3a/0316b28d0761c6734d6bc14e770d85506c986c85ffb239e688eeaab2c2bc/rich-13.9.4.tar.gz", hash = "sha256:439594978a49a09530cff7ebc4b5c7103ef57baf48d5ea3184f21d9a2befa098", size = 223149 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/19/71/39c7c0d87f8d4e6c020a393182060eaefeeae6c01dab6a84ec346f2567df/rich-13.9.4-py3-none-any.whl", hash = "sha256:6049d5e6ec054bf2779ab3358186963bac2ea89175919d699e378b99738c2a90", size = 242424 },
+]
+
+[[package]]
+name = "rich-argparse"
+version = "1.6.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "rich" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/7f/ee/c410251ff6123d4417f2fe8e72c8628f187682b70ce34134a2a3e307a2d5/rich_argparse-1.6.0.tar.gz", hash = "sha256:092083c30da186f25bcdff8b1d47fdfb571288510fb051e0488a72cc3128de13", size = 17499 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/25/45/54b95bb72bb17c27a7252bee5034955020b5869a33918b660ffc29cbf608/rich_argparse-1.6.0-py3-none-any.whl", hash = "sha256:fbe70a1d821b3f2fa8958cddf0cae131870a6e9faa04ab52b409cb1eda809bd7", size = 20072 },
 ]
 
 [[package]]
@@ -1881,6 +2058,15 @@ wheels = [
 ]
 
 [[package]]
+name = "toolz"
+version = "1.0.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/8a/0b/d80dfa675bf592f636d1ea0b835eab4ec8df6e9415d8cfd766df54456123/toolz-1.0.0.tar.gz", hash = "sha256:2c86e3d9a04798ac556793bced838816296a2f085017664e4995cb40a1047a02", size = 66790 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/03/98/eb27cc78ad3af8e302c9d8ff4977f5026676e130d28dd7578132a457170c/toolz-1.0.0-py3-none-any.whl", hash = "sha256:292c8f1c4e7516bf9086f8850935c799a874039c8bcf959d47b600e4c44a6236", size = 56383 },
+]
+
+[[package]]
 name = "tornado"
 version = "6.4.1"
 source = { registry = "https://pypi.org/simple" }
@@ -1950,6 +2136,23 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/ed/63/22ba4ebfe7430b76388e7cd448d5478814d3032121827c12a2cc287e2260/urllib3-2.2.3.tar.gz", hash = "sha256:e7d814a81dad81e6caf2ec9fdedb284ecc9c73076b62654547cc64ccdcae26e9", size = 300677 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/ce/d9/5f4c13cecde62396b0d3fe530a50ccea91e7dfc1ccf0e09c228841bb5ba8/urllib3-2.2.3-py3-none-any.whl", hash = "sha256:ca899ca043dcb1bafa3e262d73aa25c465bfb49e0bd9dd5d59f1d0acba2f8fac", size = 126338 },
+]
+
+[[package]]
+name = "wasmtime"
+version = "29.0.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "importlib-resources" },
+]
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/74/aa/a92f587239c8980ffd23bcdf1c2a8f4a9beabbf59d962e27049da6acbcfa/wasmtime-29.0.0-py3-none-any.whl", hash = "sha256:3d14a57e43378a848b4cb4e14e3edb9a01d5183cda232291b2dc202b1ade5a06", size = 5420085 },
+    { url = "https://files.pythonhosted.org/packages/17/48/0659172993a2edc7cc6b0a49557b4d348613520d4a9e2c2aecaffba731ee/wasmtime-29.0.0-py3-none-macosx_10_13_x86_64.whl", hash = "sha256:9581250dded9af61677813f67929104d750166eae4319fee8cf2dcffa715fb53", size = 6300627 },
+    { url = "https://files.pythonhosted.org/packages/19/45/d286cadd49b4b731a94a963c1a9a4a62c372f4421b7d23ee4f546a1437d5/wasmtime-29.0.0-py3-none-macosx_11_0_arm64.whl", hash = "sha256:ee00f406116db93951a27ddeb4a507f77a8d3e949a1a749b674f67927bd9f419", size = 5725470 },
+    { url = "https://files.pythonhosted.org/packages/3e/41/dcbcda10b1308046cfc8a3e9a1761df725f498864edd2311b83bda24ac1c/wasmtime-29.0.0-py3-none-manylinux1_x86_64.whl", hash = "sha256:d41f36544a1767c2095e087a12c53953a75d4b8cc1788b8a830b0afde225799a", size = 6842308 },
+    { url = "https://files.pythonhosted.org/packages/cd/02/3cf40814949af073e27a14460c7c579022637547846df6e5ec4c806a8394/wasmtime-29.0.0-py3-none-manylinux2014_aarch64.whl", hash = "sha256:11d3b3e3465c4dd174a22b0f23cd2e02b5e27b04961fac14fce5ac46021e4717", size = 6427286 },
+    { url = "https://files.pythonhosted.org/packages/02/b0/1dca5ea86f02af81eb4a551653567aa0ac7abb8d12f66141bad10c9e260a/wasmtime-29.0.0-py3-none-musllinux_1_2_x86_64.whl", hash = "sha256:3f69eb347bc399f43b524ef95169e1cc93567afb4ea11e6a855eb4f9b37b9cc9", size = 6853320 },
+    { url = "https://files.pythonhosted.org/packages/08/83/13fc6ac40d10518f9361653e9782bc74bbc6341dbfb98d6670216d431aa9/wasmtime-29.0.0-py3-none-win_amd64.whl", hash = "sha256:a1d12ae179a87289f1e9d9ade551b393de9fb3e05030953c7aa9454dabf8ffed", size = 5420092 },
 ]
 
 [[package]]
