@@ -10,7 +10,7 @@ dependencies = [
     "matplotlib==3.10.1",
     "numpy==2.2.4",
     "sphinxcontrib-mermaid==1.0.0",
-    "zarr==2.18.4",
+    "zarr==3.0.6",
 ]
 
 [tool.setuptools]
