@@ -160,12 +160,48 @@ ome_zarr_image = Image.new(
         Axis(name="y", type="space", unit="um"),
         Axis(name="z", type="space", unit="um")
     ],
-    scales = [[19.89, 19.89, 19.89]],
+    global_scale = [19.89, 19.89, 19.89],
+    scales = [[1, 1, 1]],
     translations = [[0, 0, 0]],
     name = "heart_image"
 )
 print(ome_zarr_image)
 ```
+
+As before, we can write this (empty) zarr group to a store:
+
+```{code-cell} ipython3
+ome_store = zarr.MemoryStore()
+ome_group = ome_zarr_image.to_zarr(ome_store, path='')
+print(ome_group)
+```
+
+Now the Zarr group exists, we can get the array from it
+
+```{code-cell} ipython3
+level0_array = ome_group[ome_zarr_image.attributes.multiscales[0].datasets[0].path]
+```
+
+but as before, we haven't filled the array with any data yet.
+
+```{code-cell} ipython3
+print("Before filling:")
+print(level0_array[:, :, 0])
+# Fill the data
+level0_array[:] = zarr_array[:]
+print("After filling:")
+print(level0_array[:, :, 0])
+```
+
+The real power of OME-Zarr comes from not just storing original high resolution data, but including lower resolution copies alongside. This enables...
+
+Lets remind ourselves of the current datasets in our Image
+
+```{code-cell} ipython3
+print(ome_zarr_image.attributes.multiscales[0].datasets[0])
+```
+
+To add a new dataset, TODO: write when something like https://github.com/ome-zarr-models/ome-zarr-models-py/pull/196 is merged
 
 ```{code-cell} ipython3
 
