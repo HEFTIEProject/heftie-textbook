@@ -153,7 +153,7 @@ from ome_zarr_models.v04 import Image
 from ome_zarr_models.v04.axes import Axis
 
 ome_zarr_image = Image.new(
-    arrays = [zarr_array],
+    array_specs = [ArraySpec.from_array(zarr_array)],
     paths = ["level0"],
     axes = [
         Axis(name="x", type="space", unit="um"),
@@ -164,14 +164,9 @@ ome_zarr_image = Image.new(
     translations = [[0, 0, 0]],
     name = "heart_image"
 )
+print(ome_zarr_image)
 ```
 
-Where our numpy array just contained data values, the NgffImage object contains this array alongside some new metadata including:
+```{code-cell} ipython3
 
-- The dataset name
-- The axis names
-- The axis units
-- Coordinate transformations
-
-Because we didn't explicitly specify any of this metadata when we created the NgffImage object it was set to default values.
-Lets try that again, but set some of the metadata to values more appropriate for our image:
+```

@@ -12,9 +12,9 @@ dependencies = [
     "numpy==2.2.4",
     "sphinxcontrib-mermaid==1.0.0",
     "zarr==2.18.4",
-    "ngff-zarr==0.12.1",
     "rich==13.9.4",
     "pydantic-zarr==0.7.0",
+    "ome-zarr-models==0.1.5",
 ]
 
 [tool.setuptools]
