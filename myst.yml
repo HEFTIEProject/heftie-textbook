@@ -1,0 +1,15 @@
+# See docs at: https://mystmd.org/guide/frontmatter
+version: 1
+project:
+  id: c70178fc-cc9b-432f-b278-53922f7bc9cd
+  # title:
+  # description:
+  # keywords: []
+  # authors: []
+  github: https://github.com/HEFTIEProject/heftie-textbook
+  # To autogenerate a Table of Contents, run "jupyter book init --write-toc"
+site:
+  template: book-theme
+  # options:
+  #   favicon: favicon.ico
+  #   logo: site_logo.png

@@ -8,3 +8,6 @@ book/image_file.jp2
 
 *.zarr
 data
+
+# MyST build outputs
+_build
