@@ -15,7 +15,7 @@ kernelspec:
 # Data formats
 
 This chapter gives an overview of how image data is stored on a computer, and the challenges of storing and using huge 3D imaging data.
-It then uses these challenges to motivate and explaining the development of the modern image storage formats _Zarr_ and _OME-Zarr_).
+It then uses these challenges to motivate and explain the development of the modern image storage formats, _Zarr_ and _OME-Zarr_.
 
 ## Storing data
 
@@ -59,7 +59,7 @@ for my_byte in image_bytes[:10]:
 print("...")
 ```
 
-Because we have an image with 1024 pixesl, and each pixel is stored in 16 bits (2 bytes), we have a total of 1024$\times$2 = 2048 bytes.
+Because we have an image with 1024 pixels, and each pixel is stored in 16 bits (2 bytes), we have a total of 1024$\times$2 = 2048 bytes.
 Above you can see the bits written out for the first ten bytes of the image.
 
 ## Saving images
@@ -146,7 +146,7 @@ Having to run compression (for saving the file) or decompression (for reading th
 
 If we want to compress the data further, we have to sacrifice some accuracy and use lossy compression.
 Lossy compression means that after saving and loading the data, the original data values are no longer recovered.
-A common example of a file format with lossy compression JPEG.
+A common example of a file format with lossy compression is JPEG.
 Here we'll save to a JPEG2000 file, and check the file size and whether we recover the original image.
 
 ```{code-cell} ipython3
@@ -190,6 +190,7 @@ As an example, if we have an image with shape (10, 10, 20), we could save it to 
 This is illustrated in the image below - each file is represented with a different colour.
 
 ```{code-cell} ipython3
+:tags: ["hide-input"]
 import matplotlib.figure
 
 def color_chunk_figure(*, image_shape: tuple[int, int, int], chunk_shape: tuple[int, int, int]) -> matplotlib.figure.Figure:
@@ -209,6 +210,7 @@ def color_chunk_figure(*, image_shape: tuple[int, int, int], chunk_shape: tuple[
 ```
 
 ```{code-cell} ipython3
+:tags: ["hide-input"]
 color_chunk_figure(image_shape=(10, 10, 20), chunk_shape=(10, 10, 1))
 ```
 
@@ -219,7 +221,7 @@ If we want to fetch a small cube of data from this 3D image, say shape `(2, 2, 2
 This is illustrated below - to get the data values at just 8 pixels (the red cubes), we have to read in 200 pixels in total (the orange cubes).
 
 ```{code-cell} ipython3
-:hide-input: true
+:tags: ["hide-input"]
 
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d')
@@ -286,6 +288,7 @@ color_chunk_figure(image_shape=(10, 10, 20), chunk_shape=(5, 5, 10))
 Or we could choose a smaller chunk shape:
 
 ```{code-cell} ipython3
+:tags: ["hide-input"]
 color_chunk_figure(image_shape=(10, 10, 20), chunk_shape=(2, 2, 3))
 ```
 
@@ -293,10 +296,11 @@ Note that the chunk shape doesn't have to exactly divide the image shape - in th
 
 +++
 
-Now if we want to load 8 pixels of data we need to load 8 chunks, but in total these contain far fewer pixels to read than when we saved the image as 2D slices.
+Now if we want to load the same 8 pixels of data as before we need to load 8 chunks, but in total these contain far fewer pixels to read than when we saved the image as 2D slices.
 The number of pixels read are 96, versus the previous 200:
 
 ```{code-cell} ipython3
+:tags: ["hide-input"]
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d')
 
@@ -336,13 +340,14 @@ Zarr is a file format that can be used to store 3D imaging data that breaks down
 +++
 
 We've seen how Zarr solves the problem of viewing zoomed in high-resolution fields of view of our image. But what about viewing zoomed out views of the whole dataset?
-In this case loading the full resolution data would more often be not be wasteful because their shape is larger than the screen that they're being viewed on.
+In this case loading the full resolution data would be wasteful because the data shape is larger than the screen that it's being viewed on.
 As an example, the laptop I'm writing this on has a resolution of 2560 x 1664 and the full resolution shape of an typical dataset from the Human Organ Atlas is 7000 x 7000.
 
 OME-Zarr solves this by providing a data format that stores both the original full resolution image as a Zarr array, and successively downsampled versions of the same dataset alongside as other Zarr arrays.
 This is called a _multiscale image_.
 
 ```{code-cell} ipython3
+:tags: ["hide-input"]
 fig = plt.figure()
 original_res = np.array([10, 10, 20])
 for i in range(3):
