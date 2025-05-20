@@ -1,13 +1,11 @@
 from pathlib import Path
 from typing import Literal
 
-from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 import numpy as np
 import numpy.typing as npt
 import zarr
 import zarr.storage
-
 
 
 def load_heart_data(array_type: Literal["numpy"]):
@@ -26,4 +24,4 @@ def plot_slice(array: npt.ArrayLike, *, z_idx: int) -> None:
     fig, ax = plt.subplots()
     ax.imshow(array[:, :, z_idx], cmap="Grays_r")
     ax.set_title(f"Slice at z={z_idx}")
-    ax.axis('off')
+    ax.axis("off")

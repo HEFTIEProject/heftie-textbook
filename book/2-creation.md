@@ -73,7 +73,7 @@ And some parameters have been filled in automatically for us with default values
 - `fill_value`: the value assumed if no data has been written
 - `order`: the memory order
 - `filters`: any filters applied to the data before being saved
-- `dimension_separateor`: the character separating chunks in different dimenions when the data is saved
+- `dimension_separateor`: the character separating chunks in different dimensions when the data is saved
 
 Now we've specified the array configuration, we can convert this to an actual Zarr array.
 To do this we need to create a *store*.
@@ -129,7 +129,7 @@ OME-Zarr data consists of two components:
 1. Data stored in Zarr format
 2. Metadata used to interpret the data
 
-The OME-Zarr metadata is additional metadata that lives in the `attributes` propety of Zarr arrays and groups.
+The OME-Zarr metadata is additional metadata that lives in the `attributes` property of Zarr arrays and groups.
 The OME-Zarr specification contains details for storing a number of different types of data.
 For storing 3D imaging data we will use the multiscale specification.
 
