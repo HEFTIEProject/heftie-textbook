@@ -8,11 +8,11 @@ dependencies = [
     "imageio[tifffile]==2.37.0",
     "jupyter-book==1.0.4",
     "matplotlib==3.10.3",
-    "numcodecs==0.15.1",
+    "numcodecs==0.16.1",
     "numpy==2.2.6",
     "sphinxcontrib-mermaid==1.0.0",
     "zarr==2.18.7",
-    "rich==13.9.4",
+    "rich==14.0.0",
     "pydantic-zarr==0.7.0",
     "ome-zarr-models==0.1.5",
 ]
