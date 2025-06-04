@@ -25,3 +25,10 @@ def plot_slice(array: npt.ArrayLike, *, z_idx: int) -> None:
     ax.imshow(array[:, :, z_idx], cmap="Grays_r")
     ax.set_title(f"Slice at z={z_idx}")
     ax.axis("off")
+
+
+def get_directory_contents(dirpath: Path) -> list[str]:
+    if not dirpath.is_dir():
+        raise ValueError(f"{dirpath} is not a directory")
+
+    return sorted(d.relative_to(dirpath).name for d in dirpath.glob("*"))
