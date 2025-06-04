@@ -178,6 +178,7 @@ The first step is to create a new OME-Zarr Image:
 from ome_zarr_models.v04 import Image
 from ome_zarr_models.v04.axes import Axis
 
+voxel_size = 19.89
 ome_zarr_image = Image.new(
     array_specs = [ArraySpec.from_array(zarr_array)],
     paths = ["level0"],
@@ -186,7 +187,7 @@ ome_zarr_image = Image.new(
         Axis(name="y", type="space", unit="um"),
         Axis(name="z", type="space", unit="um")
     ],
-    global_scale = [19.89, 19.89, 19.89],
+    global_scale = [voxel_size, voxel_size, voxel_size],
     scales = [[1, 1, 1]],
     translations = [[0, 0, 0]],
     name = "heart_image"
@@ -227,8 +228,38 @@ Lets remind ourselves of the current datasets in our Image
 print(ome_zarr_image.attributes.multiscales[0].datasets[0])
 ```
 
-To add a new dataset, TODO: write when something like https://github.com/ome-zarr-models/ome-zarr-models-py/pull/196 is merged
+To create downsampled datasets, we'll start with the original array specification, and create identical array specifications with smaller shapes.
 
 ```{code-cell} ipython3
+import math
 
+full_res_spec = ArraySpec.from_array(zarr_array)
+print("Original array specification: ", full_res_spec)
+
+downsample_levels = [0, 1, 2]
+downsampled_specs = [
+    full_res_spec.model_copy(
+        update={"shape": tuple(math.ceil(i / 2**d) for i in full_res_spec.shape)
+    }) for d in downsample_levels
+]
+print("Downsampled array specifications: ", downsampled_specs)
+```
+
+With this new set of array specifications we can create a OME-Zarr image with multiple downsampled levels
+
+```{code-cell} ipython3
+ome_zarr_image = Image.new(
+    array_specs = downsampled_specs,
+    paths = [f"level{d}" for d in downsample_levels],
+    axes = [
+        Axis(name="x", type="space", unit="um"),
+        Axis(name="y", type="space", unit="um"),
+        Axis(name="z", type="space", unit="um")
+    ],
+    global_scale = [voxel_size, voxel_size, voxel_size],
+    scales = [[2**d, 2**d, 2**d] for d in downsample_levels],
+    translations = [[0, 0, 0] for d in downsample_levels],
+    name = "heart_image"
+)
+print(ome_zarr_image)
 ```
