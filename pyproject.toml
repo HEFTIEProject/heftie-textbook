@@ -15,6 +15,7 @@ dependencies = [
     "rich==13.9.4",
     "pydantic-zarr==0.7.0",
     "ome-zarr-models==0.1.5",
+    "joblib==1.5.1",
 ]
 
 [tool.setuptools]
