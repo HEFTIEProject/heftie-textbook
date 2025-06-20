@@ -164,3 +164,5 @@ ds = pydicom.dcmread('output.dcm')
 # Extract the pixel data as a NumPy array
 data = ds.pixel_array
 ```
+
+Both the NIfTI and DICOM sub-volumes can be viewed in open-source viewers such as `ITK-SNAP` (see [ITK-SNAP site](https://www.itksnap.org/pmwiki/pmwiki.php)).
