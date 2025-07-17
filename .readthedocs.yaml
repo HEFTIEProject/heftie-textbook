@@ -3,17 +3,13 @@ build:
   os: ubuntu-22.04
   tools:
     python: "3.12"
-    nodejs: "16"
+    nodejs: "22"
   jobs:
     pre_build:
       # Generate the Sphinx configuration for
       # this Jupyter Book so it builds.
       - "jupyter-book config sphinx book/"
     post_install:
-      # update node version
-      - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
-      - source ~/.bashrc
-      - nvm install 22.17.1
       - npm install -g @mermaid-js/mermaid-cli
       # Import matplotlib to build the font cache
       # Otherwise, the first time it's imported cell execution
