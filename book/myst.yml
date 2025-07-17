@@ -1,0 +1,25 @@
+version: 1
+project:
+  title: Working with enormous 3D imaging datasets
+  authors:
+    - name: David Stansby
+  github: UCL-MSM-Bio/heftie-textbook
+  bibliography:
+    - references.bib
+  exports:
+    - format: pdf
+      template: plain_latex_book
+      output: exports/book.pdf
+  toc:
+    - file: home.md
+    - file: 1-storage.md
+    - file: 2-creation.md
+    - file: 3-remote.md
+    - file: 4-processing.md
+    - file: 5-visualising.md
+    - file: appendices.md
+site:
+  options:
+    logo: images/heftie_logo.svg
+    folders: true
+  template: book-theme
