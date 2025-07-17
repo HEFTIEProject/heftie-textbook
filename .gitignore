@@ -8,3 +8,7 @@ book/image_file.jp2
 
 *.zarr
 data
+*.egg-info
+
+# MyST build outputs
+_build
