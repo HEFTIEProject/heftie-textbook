@@ -10,6 +10,8 @@ build:
       # this Jupyter Book so it builds.
       - "jupyter-book config sphinx book/"
     post_install:
+      # update node version
+      - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
       - nvm install 22.17.1
       - npm install -g @mermaid-js/mermaid-cli
       # Import matplotlib to build the font cache
