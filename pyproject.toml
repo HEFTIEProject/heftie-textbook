@@ -10,7 +10,6 @@ dependencies = [
     "matplotlib==3.10.3",
     "numcodecs==0.15.1",
     "numpy==2.2.6",
-    "sphinxcontrib-mermaid==1.0.0",
     "zarr==2.18.7",
     "rich==14.0.0",
     "pydantic-zarr==0.7.0",
