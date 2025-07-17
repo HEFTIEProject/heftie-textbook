@@ -19,6 +19,9 @@ project:
     - file: 5-visualising.md
     - file: appendices.md
 site:
+  nav:
+      - title: ⚠️ This book is still a work in progress! Feedback is welcome on our issue tracker ⚠️
+        url: https://github.com/HEFTIEProject/heftie-textbook/issues
   options:
     logo: images/heftie_logo.svg
     folders: true
