@@ -5,24 +5,16 @@ build:
     python: "3.12"
     nodejs: "22"
   jobs:
-    pre_build:
-      # Generate the Sphinx configuration for
-      # this Jupyter Book so it builds.
-      - "jupyter-book config sphinx book/"
+    install:
+      - pip install .
     post_install:
       - npm install -g @mermaid-js/mermaid-cli
       # Import matplotlib to build the font cache
       # Otherwise, the first time it's imported cell execution
       # can timeout
       - python -c "import matplotlib"
-
-# Dependencies required to build your docs
-python:
-  install:
-    - method: pip
-      path: .
-
-sphinx:
-  builder: html
-  configuration: book/conf.py
-  fail_on_warning: true
+    build:
+      html:
+        - cd book/
+        - jupyter book build --html --execute
+        - mv ./_build/html $READTHEDOCS_OUTPUT/html/
