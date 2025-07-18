@@ -15,6 +15,5 @@ build:
       - python -c "import matplotlib"
     build:
       html:
-        - cd book/
-        - jupyter book build --html --execute
-        - mv ./_build/html $READTHEDOCS_OUTPUT/html/
+        - cd book/ && jupyter book build --html --execute
+        - mv ./book/_build/html $READTHEDOCS_OUTPUT/html/
