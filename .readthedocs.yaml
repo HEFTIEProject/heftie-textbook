@@ -16,5 +16,5 @@ build:
     build:
       html:
         - cd book/ && jupyter book build --html --execute
-        - mkdir -p $READTHEDOCS_OUTPUT/html/
-        - mv ./book/_build/html $READTHEDOCS_OUTPUT/html/
+        - mkdir -p $READTHEDOCS_OUTPUT
+        - mv ./book/_build/html $READTHEDOCS_OUTPUT
