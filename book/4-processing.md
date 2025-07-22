@@ -131,11 +131,14 @@ def threshold(array):
 
 ```{code-cell} ipython3
 from data_helpers import plot_slice
+import matplotlib.pyplot as plt
 
 heart_image = load_heart_data(array_type='zarr')
 thresholded_image = zarr.empty_like(heart_image)
-plot_slice(heart_image, z_idx=65)
-plot_slice(thresholded_image, z_idx=65)
+
+fig, axs = plt.subplots(ncols=2)
+plot_slice(heart_image, z_idx=65, ax=axs[0])
+plot_slice(thresholded_image, z_idx=65, ax=axs[1])
 ```
 
 ```{code-cell} ipython3
@@ -151,13 +154,14 @@ for job, args, kwargs in jobs:
 ```
 
 ```{code-cell} ipython3
-plot_slice(heart_image, z_idx=65)
-plot_slice(thresholded_image, z_idx=65)
+fig, axs = plt.subplots(ncols=2)
+plot_slice(heart_image, z_idx=65, ax=axs[0])
+plot_slice(thresholded_image, z_idx=65, ax=axs[1])
 ```
 
 ### Downsampling
 
-If we're downsampling by a factor of two, then our ouptut array will have half the shape of the input array. In 3D, eight input chunks will map to one output chunk.
+If we're downsampling by a factor of two, then our output array will have half the shape of the input array. In 3D, eight input chunks will map to one output chunk.
 
 ```{mermaid}
     flowchart LR
@@ -178,7 +182,7 @@ If we're downsampling by a factor of two, then our ouptut array will have half t
 
 ### Upsampling
 
-If we're upsampling by a factor of two, then our ouptut array will have double the shape of the input array. In 3D, each input chunk will map to 8 output chunks.
+If we're upsampling by a factor of two, then our output array will have double the shape of the input array. In 3D, each input chunk will map to 8 output chunks.
 
 ```{mermaid}
     flowchart LR

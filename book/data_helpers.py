@@ -2,6 +2,7 @@ from pathlib import Path
 from typing import Literal
 
 import matplotlib.pyplot as plt
+from matplotlib.axes import Axes
 import numpy as np
 import numpy.typing as npt
 import zarr
@@ -22,8 +23,9 @@ def load_heart_data(array_type: Literal["numpy", "zarr"]):
         raise ValueError(f"Did not recognise {array_type=}")
 
 
-def plot_slice(array: npt.ArrayLike, *, z_idx: int) -> None:
-    fig, ax = plt.subplots()
+def plot_slice(array: npt.ArrayLike, *, z_idx: int, ax: Axes | None = None) -> None:
+    if ax is None:
+        _, ax = plt.subplots()
     ax.imshow(array[:, :, z_idx], cmap="Grays_r")
     ax.set_title(f"Slice at z={z_idx}")
     ax.axis("off")
