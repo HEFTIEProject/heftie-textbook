@@ -389,6 +389,7 @@ dependencies = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "jupyter-ruff" },
     { name = "jupyterlab" },
     { name = "jupytext" },
 ]
@@ -409,6 +410,7 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "jupyter-ruff", specifier = ">=0.3.0" },
     { name = "jupyterlab", specifier = "==4.3.0" },
     { name = "jupytext", specifier = "==1.16.4" },
 ]
@@ -703,6 +705,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/28/3d/40bdb41b665d3302390ed1356cebd5917c10769d1f190ee4ca595900840e/jupyter_lsp-2.2.6.tar.gz", hash = "sha256:0566bd9bb04fd9e6774a937ed01522b555ba78be37bebef787c8ab22de4c0361", size = 48948, upload-time = "2025-07-18T21:35:19.885Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/47/7c/12f68daf85b469b4896d5e4a629baa33c806d61de75ac5b39d8ef27ec4a2/jupyter_lsp-2.2.6-py3-none-any.whl", hash = "sha256:283783752bf0b459ee7fa88effa72104d87dd343b82d5c06cf113ef755b15b6d", size = 69371, upload-time = "2025-07-18T21:35:16.585Z" },
+]
+
+[[package]]
+name = "jupyter-ruff"
+version = "0.3.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/ae/05/9db5f7974e4bd339f36f0e9bebcf1e6f79efe15ce0a0b0e1cb3630de2e58/jupyter_ruff-0.3.0.tar.gz", hash = "sha256:e9bb9e1a4538fd6624cd19d892da1538397628a8e9263851734c0c733acc7272", size = 3337924, upload-time = "2025-05-24T10:25:56.009Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/0a/9e/9fe9571c32a1367c7f6fb6150484da4728eb7035e54425b35e9ab132cac3/jupyter_ruff-0.3.0-py3-none-any.whl", hash = "sha256:7183f74c9c1b6853894166ff1ce2e55f6aa3f8908518efeeeed03a7869c734e4", size = 3184003, upload-time = "2025-05-24T10:25:53.711Z" },
 ]
 
 [[package]]

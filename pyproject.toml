@@ -21,4 +21,8 @@ dependencies = [
 packages = []
 
 [dependency-groups]
-dev = ["jupyterlab==4.3.0", "jupytext==1.16.4"]
+dev = [
+    "jupyter-ruff>=0.3.0",
+    "jupyterlab==4.3.0",
+ "jupytext==1.16.4",
+]
