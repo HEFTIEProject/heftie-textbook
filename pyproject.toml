@@ -9,11 +9,11 @@ dependencies = [
     "jupyter-book==2.0.0b2",
     "matplotlib==3.10.3",
     "numcodecs==0.15.1",
-    "numpy==2.2.6",
+    "numpy==2.3.0",
     "zarr==2.18.7",
     "rich==14.0.0",
     "pydantic-zarr==0.7.0",
-    "ome-zarr-models==0.1.5",
+    "ome-zarr-models==0.1.8",
 ]
 
 [tool.setuptools]
