@@ -17,36 +17,37 @@ kernelspec:
 +++
 
 In this chapter we'll look at how to efficiently process Zarr arrays.
-We'll do it with a focus on scalability
-Although the examples here will be on relatively small arrays, the theory and techniques described should scale to processing on large datasets and machines with larger resources (e.g., number of CPUs).
+We'll do it with a focus on scalability.
+Although the examples here below operate on small arrays, the theory and techniques described will scale to processing large datasets and machines with more resources (e.g., number of processing cores).
 
-When we process an array, we are transforming it in some way and creating a new array.
-Think of this as a mapping from one array to another.
-
+When we process an array, we are transforming it in some way and creating a new array - think of this as a mapping from one array to another.
 Because a Zarr array is split into chunks, we can split up this mapping into many smaller jobs.
-Because we have to write complete chunks of a Zarr array, we can think of the task as a mapping from the input array to each individual output chunk, and then create one job (process) for each output chunk.
-This will allow us to parallelise computation over the output chunks, speeding processing up when we have the resources to run jobs in parallel.
+When writing a Zarr array whole chunks are compressed at written in one go, so it makes sense to break down the task into a mapping a mapping from the input array to each individual output chunk, and then create one job for each output chunk.
+This will allow us to compute each output chunk independently, which has two large benefits:
+
+- For each job we only need to load the data into memory needed to compute a single output chunk
+- We can parallelise the computation of output chunks, speeding up the whole process.
 
 To start with lets look at the simplest possible mapping from input chunks to output chunks - where the output array has the same shape and chunk size as the input array, and each output chunk depends only on the corresponding input chunk.
 
 +++
 
-## Element-wise operations (e.g., thresholding)
-Element-wise operations are those where there's a 1:1 mapping from input chunks to output chunks.
+## Element-wise operations
+
+Element-wise operations are those where there's an exact one-to-one mapping from input chunks to output chunks.
 
 ```{mermaid}
     flowchart LR
         input_i --> output_i
-        
-        output_i["Output chunk i"]
-        input_i["Input chunk i"]
+
+        output_i["Chunk i, j, k"]
+        input_i["Chunk i, j k"]
 ```
 
-This makes parallelising very simple - we can write a function that takes an array, and returns an array that has the same shape. For example, to do a simple thresholding operation:
+This makes parallelising very simple - we can write a function that takes one chunk (an array), and returns another chunk (another array) that has the same shape.
 
-+++
-
-To start with we'll write a function that generates the indices of all the chunks in a Zarr Array.
+Before we get into this we'll setup a few helper functions.
+First, a function that generates slices for every chunk in a Zarr array:
 
 ```{code-cell} ipython3
 import itertools
@@ -82,6 +83,8 @@ for slc in all_chunk_slices(heart_image):
     print(slc)
 ```
 
+Second, a function to copy a slice of data from one array to another:
+
 ```{code-cell} ipython3
 import itertools
 from collections.abc import Callable
@@ -99,17 +102,12 @@ def copy_slice(input_array: zarr.Array, output_array: zarr.Array, slc: slice) ->
     """
     print(f"Copying slice {slc}...")
     output_array[slc] = input_array[slc]
+```
 
+And third, a function to double check two Zarr arrays have the same shape and chunks:
 
-def elementwise_jobs(
-    f: Callable[..., npt.NDArray[Any]],
-    *,
-    input_array: zarr.Array,
-    output_array: zarr.Array,
-) -> list[joblib.delayed]:
-    """
-    Apply a function to all chunks of a Zarr array.
-    """
+```{code-cell} ipython3
+def check_same_shape(array_1: zarr.Array, array_2: zarr.Array) -> None:
     if input_array.shape != output_array.shape:
         raise ValueError(
             f"Input shape ({input_array.shape}) != output shape {output_array.shape}"
@@ -119,6 +117,19 @@ def elementwise_jobs(
             f"Input chunk ({input_array.chunks}) != output chunks {output_array.chunks}"
         )
 
+```
+
+```{code-cell} ipython3
+def elementwise_jobs(
+    f: Callable[..., npt.NDArray[Any]],
+    *,
+    input_array: zarr.Array,
+    output_array: zarr.Array,
+) -> list[joblib.delayed]:
+    """
+    Apply a function to all chunks of a Zarr array.
+    """
+    check_same_shape(input_array, output_array)
     return [
         joblib.delayed(copy_slice)(input_array, output_array, slc)
         for slc in all_chunk_slices(output_array)
