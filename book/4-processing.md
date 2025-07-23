@@ -50,6 +50,10 @@ Before we get into this we'll setup a few helper functions.
 First, a function that generates slices for every chunk in a Zarr array:
 
 ```{code-cell} ipython3
+from rich import print as pprint
+```
+
+```{code-cell} ipython3
 import itertools
 from typing import Generator
 
@@ -86,58 +90,94 @@ for slc in all_chunk_slices(heart_image):
 Second, a function to copy a slice of data from one array to another:
 
 ```{code-cell} ipython3
-import itertools
 from collections.abc import Callable
 from typing import Any
 
-import joblib
-import numpy as np
 import numpy.typing as npt
-import zarr
 
-
-def copy_slice(input_array: zarr.Array, output_array: zarr.Array, slc: slice) -> None:
+def apply_to_slice(
+    f: Callable[[npt.NDArray[Any]], npt.NDArray[Any]],
+    input_array: zarr.Array,
+    output_array: zarr.Array,
+    slc: slice,
+) -> None:
     """
-    Copy a specific slice of data from one array to another.
+    Copy a specific slice of data from one array to another, applying a function in between.
+
+    Parameters
+    ----------
+    f :
+        Function to apply to slice of data.
+    input_array :
+        Array to read from.
+    output_array :
+        Array to write to.
+    slc :
+        Slice of data to process.
     """
     print(f"Copying slice {slc}...")
-    output_array[slc] = input_array[slc]
+    output_array[slc] = f(input_array[slc])
 ```
 
 And third, a function to double check two Zarr arrays have the same shape and chunks:
 
 ```{code-cell} ipython3
 def check_same_shape(array_1: zarr.Array, array_2: zarr.Array) -> None:
-    if input_array.shape != output_array.shape:
-        raise ValueError(
-            f"Input shape ({input_array.shape}) != output shape {output_array.shape}"
-        )
-    if input_array.chunks != output_array.chunks:
-        raise ValueError(
-            f"Input chunk ({input_array.chunks}) != output chunks {output_array.chunks}"
-        )
+    """
+    Check that two arrays have the same shape and chunks.
 
+    Raises
+    ------
+    ValueError
+        If the arrays don't have the same shape or chunks.
+    """
+    if array_1.shape != array_2.shape:
+        raise ValueError(
+            f"Input shape ({array_1.shape}) != output shape {array_2.shape}"
+        )
+    if array_1.chunks != array_2.chunks:
+        raise ValueError(
+            f"Input chunk ({array_1.chunks}) != output chunks {array_2.chunks}"
+        )
 ```
 
+Next we're going to put all these functions together to make a function that sets up a number of jobs. Each job will read a single chunk of data from an input array, apply our function, and then write the result to a single chunk of the output array.
+
 ```{code-cell} ipython3
+import joblib
+
+delayed_apply_to_slice = joblib.delayed(apply_to_slice)
+
 def elementwise_jobs(
-    f: Callable[..., npt.NDArray[Any]],
+    f: Callable[[npt.NDArray[Any]], npt.NDArray[Any]],
     *,
     input_array: zarr.Array,
     output_array: zarr.Array,
 ) -> list[joblib.delayed]:
     """
     Apply a function to all chunks of a Zarr array.
+
+    Parameters
+    ----------
+    f : 
+        Function to apply to each chunk.
+    input_array :
+        Array to read from.
+    output_array :
+        Array to write to.
     """
     check_same_shape(input_array, output_array)
     return [
-        joblib.delayed(copy_slice)(input_array, output_array, slc)
+        delayed_apply_to_slice(f, input_array, output_array, slc)
         for slc in all_chunk_slices(output_array)
     ]
+```
 
+```{code-cell} ipython3
+import numpy as np
 
 def threshold(array):
-    return np.clip(array, 0, 1)
+    return np.clip(array, 128, 256)
 ```
 
 ```{code-cell} ipython3
@@ -145,7 +185,7 @@ from data_helpers import plot_slice
 import matplotlib.pyplot as plt
 
 heart_image = load_heart_data(array_type='zarr')
-thresholded_image = zarr.empty_like(heart_image)
+thresholded_image = zarr.zeros_like(heart_image)
 
 fig, axs = plt.subplots(ncols=2)
 plot_slice(heart_image, z_idx=65, ax=axs[0])
@@ -153,10 +193,12 @@ plot_slice(thresholded_image, z_idx=65, ax=axs[1])
 ```
 
 ```{code-cell} ipython3
+
 thresholded_image = zarr.empty_like(heart_image)
 jobs = elementwise_jobs(threshold, input_array=heart_image, output_array=thresholded_image)
 print(f"Number of jobs: {len(jobs)}")
-print(jobs[0])
+print("First job:")
+pprint(jobs[0])
 ```
 
 ```{code-cell} ipython3
@@ -176,17 +218,25 @@ If we're downsampling by a factor of two, then our output array will have half t
 
 ```{mermaid}
     flowchart LR
-        input_i --> output_i
-        input_i --> output_i
-        input_i --> output_i
-        input_i --> output_i
-        input_i --> output_i
-        input_i --> output_i
-        input_i --> output_i
-        input_i --> output_i
+        input_1 --> output_i
+        input_2 --> output_i
+        input_3 --> output_i
+        input_4 --> output_i
+        input_5 --> output_i
+        input_6 --> output_i
+        input_7 --> output_i
+        input_8 --> output_i
 
-        output_i["Output chunk i, j, k"]
-        input_i["Input chunk 2i, 2j, 2k"]
+        output_i["Chunk i, j, k"]
+        
+        input_1["Chunk 2i, 2j, 2k"]
+        input_2["Chunk 2i, 2j, 2k+1"]
+        input_3["Chunk 2i, 2j+1, 2k"]
+        input_4["Chunk 2i, 2j+1, 2k+1"]
+        input_5["Chunk 2i+1, 2j, 2k"]
+        input_6["Chunk 2i+1, 2j, 2k+1"]
+        input_7["Chunk 2i+1, 2j+1, 2k"]
+        input_8["Chunk 2i+1, 2j+1, 2k+1"]
 ```
 
 +++
@@ -197,17 +247,25 @@ If we're upsampling by a factor of two, then our output array will have double t
 
 ```{mermaid}
     flowchart LR
-        input_i --> output_i
-        input_i --> output_i
-        input_i --> output_i
-        input_i --> output_i
-        input_i --> output_i
-        input_i --> output_i
-        input_i --> output_i
-        input_i --> output_i
+        output_i --> input_1 
+        output_i --> input_2
+        output_i --> input_3 
+        output_i --> input_4
+        output_i --> input_5 
+        output_i --> input_6
+        output_i --> input_7
+        output_i --> input_8
 
-        input_i["Input chunk 2i, 2j, 2k"]
-        output_i["Output chunk i, j, k"]
+        output_i["Chunk i, j, k"]
+        
+        input_1["Chunk 2i, 2j, 2k"]
+        input_2["Chunk 2i, 2j, 2k+1"]
+        input_3["Chunk 2i, 2j+1, 2k"]
+        input_4["Chunk 2i, 2j+1, 2k+1"]
+        input_5["Chunk 2i+1, 2j, 2k"]
+        input_6["Chunk 2i+1, 2j, 2k+1"]
+        input_7["Chunk 2i+1, 2j+1, 2k"]
+        input_8["Chunk 2i+1, 2j+1, 2k+1"]
 ```
 
 +++
