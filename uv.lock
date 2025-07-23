@@ -393,7 +393,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "imageio", extras = ["tifffile"], specifier = "==2.37.0" },
-    { name = "jupyter-book", specifier = "==2.0.0b1" },
+    { name = "jupyter-book", specifier = "==2.0.0b2" },
     { name = "matplotlib", specifier = "==3.10.3" },
     { name = "numcodecs", specifier = "==0.15.1" },
     { name = "numpy", specifier = "==2.2.6" },
@@ -604,7 +604,7 @@ wheels = [
 
 [[package]]
 name = "jupyter-book"
-version = "2.0.0b1"
+version = "2.0.0b2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "ipykernel" },
@@ -613,9 +613,9 @@ dependencies = [
     { name = "nodeenv" },
     { name = "platformdirs" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/98/dc/e22410820132e8ffe3cbae51474004b6fad3322da75e154e6c4d0237735b/jupyter_book-2.0.0b1.tar.gz", hash = "sha256:a5bedf2c61a65b3d3297ce38acf702663a32a6ba9791f25e5c8eee4fad9c64ac", size = 14475313 }
+sdist = { url = "https://files.pythonhosted.org/packages/e5/7f/e4e662e7c60c20abc96067aa5093f946653fc16c7e3742cb3a3e399732fe/jupyter_book-2.0.0b2.tar.gz", hash = "sha256:946d37032f394395cb5356d8a02abbfb9ce7d293aa6f204a7812d247d5022408", size = 14475674 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ad/bd/e972ae7bfd34c31dfa91c7f419c7d914731e0152f00d8ec6e10b800844d4/jupyter_book-2.0.0b1-py3-none-any.whl", hash = "sha256:333ed762ea1b47751a590746b10290e7d31a1e6a8281f606d286c633e244bc0a", size = 2606567 },
+    { url = "https://files.pythonhosted.org/packages/f0/2f/e490eed403f5a18ca1170ae9f0ea2d30732ec70f7314c424bc16a4432ba9/jupyter_book-2.0.0b2-py3-none-any.whl", hash = "sha256:1ea4df00a4b96921012e2461cd76e21fcc557385e54ed481f5cab7646201af52", size = 2606633 },
 ]
 
 [[package]]
