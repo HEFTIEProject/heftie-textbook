@@ -141,11 +141,47 @@ def check_same_shape(array_1: zarr.Array, array_2: zarr.Array) -> None:
         )
 ```
 
-Next we're going to put all these functions together to make a function that sets up a number of jobs. Each job will read a single chunk of data from an input array, apply our function, and then write the result to a single chunk of the output array.
+Next we're going to put all these functions together to make a function that sets up a number of jobs.
+Each job will read a single chunk of data from an input array, apply our function, and then write the result to a single chunk of the output array.
+
+This uses the concept of a 'delayed' function, taken from the [`joblib`](https://joblib.readthedocs.io) Python library.
+When a delayed function is called, it is not run, but instead a reference to the function and the arguments to be applied to it are saved.
+Lets see how this works with a simple exmaple:
 
 ```{code-cell} ipython3
 import joblib
 
+def add(x: int, *, y: int) -> int:
+    print(f"Adding {x} to {y}")
+    return x + y
+
+delayed_add = joblib.delayed(add)
+job = delayed_add(3, y=4)
+print(job)
+```
+
+We can tell that because nothing has been printed, the function hasn't been run.
+The result is a tuple, containing the funciton, any arguments, and any keyword arguments to be applied to it.
+We can run the job manually:
+
+```{code-cell} ipython3
+function, args, kwargs = job
+function(*args, **kwargs)
+```
+
+Alternatively `joblib` has a builtin class to execute many jobs in parallel:
+
+```{code-cell} ipython3
+jobs = [
+    delayed_add(3, y=4),
+    delayed_add(2, y=1)
+]
+executor = joblib.Parallel(n_jobs=1)
+results = executor(jobs)
+print(results)
+```
+
+```{code-cell} ipython3
 delayed_apply_to_slice = joblib.delayed(apply_to_slice)
 
 def elementwise_jobs(
@@ -174,6 +210,10 @@ def elementwise_jobs(
 ```
 
 ```{code-cell} ipython3
+
+```
+
+```{code-cell} ipython3
 import numpy as np
 
 def threshold(array):
@@ -193,7 +233,6 @@ plot_slice(thresholded_image, z_idx=65, ax=axs[1])
 ```
 
 ```{code-cell} ipython3
-
 thresholded_image = zarr.empty_like(heart_image)
 jobs = elementwise_jobs(threshold, input_array=heart_image, output_array=thresholded_image)
 print(f"Number of jobs: {len(jobs)}")
