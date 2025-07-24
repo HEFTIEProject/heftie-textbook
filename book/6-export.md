@@ -65,6 +65,8 @@ in place to the original Zarr array.
 import imageio.v3 as iio
 iio.imwrite("image_file.tiff", np_array, plugin='tifffile')
 
+# Do some processing with another tool / software here...
+# Then load the result:
 zarr_small=iio.imread("image_file.tiff", plugin='tifffile')
 
 zarr_array[100:200, 100:200, 100:200]=zarr_small
