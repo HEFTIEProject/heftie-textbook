@@ -124,39 +124,148 @@ saved as a DICOM file.
 
 
 ```{code-cell} ipython3
+import os
 import pydicom
 from pydicom.dataset import Dataset, FileDataset
 import datetime
 
-# Example 2D data (DICOM is usually 2D per file)
-data = np_array[:,:, 0]  # Take the first slice for demonstration
+# Create output folder
+output_folder = "dicom_slices_robust"
+os.makedirs(output_folder, exist_ok=True)
 
-# Create metadata
-file_meta = pydicom.Dataset()
-ds = FileDataset("output.dcm", {}, file_meta=file_meta, preamble=b"\0" * 128)
+# Get a subset of the 3D array (slices 100-200)
+np_array_subset = zarr_array[100:200, :, :]
+print(f"Processing {np_array_subset.shape[0]} slices (100-200)...")
+print(f"Original data type: {np_array_subset.dtype}")
 
-# Set required values
-ds.PatientName = "Test^Patient"
-ds.PatientID = "123456"
-ds.Modality = "CT"
-ds.StudyInstanceUID = "1.2.3"
-ds.SeriesInstanceUID = "1.2.3.1"
-ds.SOPInstanceUID = "1.2.3.1.1"
-ds.SOPClassUID = pydicom.uid.SecondaryCaptureImageStorage
-ds.file_meta.TransferSyntaxUID = pydicom.uid.ExplicitVRLittleEndian
+# Normalise the data
+if np_array_subset.dtype == np.float32 or np_array_subset.dtype == np.float64:
+    # For float data, normalize and convert to uint16
+    data_min = float(np_array_subset.min())
+    data_max = float(np_array_subset.max())
+    print(f"Data range: {data_min} to {data_max}")
+    
+    if data_max > data_min:
+        np_array_normalized = ((np_array_subset - data_min) / (data_max - data_min) * 65535).astype(np.uint16)
+    else:
+        np_array_normalized = np.zeros_like(np_array_subset, dtype=np.uint16)
+else:
+    # For integer data, just convert to uint16
+    np_array_normalized = np_array_subset.astype(np.uint16)
 
-# Set image data
-ds.Rows, ds.Columns = data.shape
-ds.PhotometricInterpretation = "MONOCHROME2"
-ds.SamplesPerPixel = 1
-ds.BitsAllocated = 16
-ds.BitsStored = 16
-ds.HighBit = 15
-ds.PixelRepresentation = 0
-ds.PixelData = data.tobytes()
+# Generate unique UIDs
+study_uid = pydicom.uid.generate_uid()
+series_uid = pydicom.uid.generate_uid()
 
-# Save to file
-ds.save_as("output.dcm")
+# Define spacing and origin
+pixel_spacing = [0.2, 0.2]  # Adjust based on your actual pixel spacing
+slice_thickness = 0.2       # Adjust based on your actual slice thickness
+origin = [0.0, 0.0, 0.0]
+
+for i in range(100):
+    # Get 2D slice
+    data_2D = np_array_normalized[i, :, :]
+    
+    # Ensure data is contiguous
+    data_2D = np.ascontiguousarray(data_2D)
+    
+    # Create file metadata
+    file_meta = pydicom.Dataset()
+    file_meta.MediaStorageSOPClassUID = pydicom.uid.CTImageStorage
+    file_meta.MediaStorageSOPInstanceUID = pydicom.uid.generate_uid()
+    file_meta.TransferSyntaxUID = pydicom.uid.ExplicitVRLittleEndian
+    file_meta.ImplementationClassUID = pydicom.uid.generate_uid()
+    file_meta.ImplementationVersionName = "PYDICOM_1.0"
+    
+    ds = FileDataset(f"slice_{i+100:04d}.dcm", {}, file_meta=file_meta, preamble=b"\0" * 128)
+    
+    # Patient Module
+    ds.PatientName = "Zarr^Patient"
+    ds.PatientID = "ZP001"
+    ds.PatientBirthDate = "19900101"
+    ds.PatientSex = "O"
+    
+    # General Study Module
+    ds.StudyInstanceUID = study_uid
+    ds.StudyID = "1"
+    ds.StudyDate = datetime.datetime.now().strftime("%Y%m%d")
+    ds.StudyTime = datetime.datetime.now().strftime("%H%M%S")
+    ds.AccessionNumber = "ACC001"
+    ds.ReferringPhysicianName = "Dr^Referring"
+    
+    # General Series Module
+    ds.SeriesInstanceUID = series_uid
+    ds.SeriesNumber = 1
+    ds.Modality = "CT"
+    ds.SeriesDescription = "Zarr Volume Series"
+    ds.SeriesDate = datetime.datetime.now().strftime("%Y%m%d")
+    ds.SeriesTime = datetime.datetime.now().strftime("%H%M%S")
+    
+    # General Equipment Module
+    ds.Manufacturer = "Zarr Tools"
+    ds.ManufacturerModelName = "ZarrConverter"
+    ds.SoftwareVersions = "1.0"
+    
+    # Frame of Reference Module
+    ds.FrameOfReferenceUID = pydicom.uid.generate_uid()
+    ds.PositionReferenceIndicator = ""
+    
+    # General Image Module
+    ds.InstanceNumber = i + 1
+    ds.PatientOrientation = ""
+    ds.ImageDate = datetime.datetime.now().strftime("%Y%m%d")
+    ds.ImageTime = datetime.datetime.now().strftime("%H%M%S")
+    ds.ImageType = ["ORIGINAL", "PRIMARY", "AXIAL"]
+    ds.AcquisitionNumber = 1
+    ds.AcquisitionDate = datetime.datetime.now().strftime("%Y%m%d")
+    ds.AcquisitionTime = datetime.datetime.now().strftime("%H%M%S")
+    
+    # Image Plane Module (Critical for 3D reconstruction)
+    ds.SliceThickness = str(slice_thickness)
+    ds.SpacingBetweenSlices = str(slice_thickness)
+    ds.SliceLocation = float(i * slice_thickness)
+    ds.ImagePositionPatient = [
+        float(origin[0]), 
+        float(origin[1]), 
+        float(origin[2] + i * slice_thickness)
+    ]
+    ds.ImageOrientationPatient = [1.0, 0.0, 0.0, 0.0, 1.0, 0.0]
+    
+    # Image Pixel Module
+    ds.Rows = data_2D.shape[0]
+    ds.Columns = data_2D.shape[1]
+    ds.PixelSpacing = [float(pixel_spacing[0]), float(pixel_spacing[1])]
+    ds.BitsAllocated = 16
+    ds.BitsStored = 16
+    ds.HighBit = 15
+    ds.PixelRepresentation = 0
+    ds.PhotometricInterpretation = "MONOCHROME2"
+    ds.SamplesPerPixel = 1
+    
+    # CT Image Module (if using CT modality)
+    ds.RescaleIntercept = "0"
+    ds.RescaleSlope = "1"
+    ds.RescaleType = "HU"
+    
+    # SOP Common Module
+    ds.SOPClassUID = pydicom.uid.CTImageStorage  # Match file_meta
+    ds.SOPInstanceUID = file_meta.MediaStorageSOPInstanceUID
+    
+    # Set pixel data
+    ds.PixelData = data_2D.tobytes()
+    
+    # Validate dataset
+    ds.is_implicit_VR = False
+    ds.is_little_endian = True
+    
+    # Save file
+    output_path = os.path.join(output_folder, f"slice_{i+100:04d}.dcm")
+    ds.save_as(output_path, write_like_original=False)
+    
+    if i % 10 == 0:
+        print(f"Saved slice {i+100}")
+
+print(f"100 slices (100-199) saved to '{output_folder}' folder")
 ```
 
 After processing the sub-volume, we can then read it back in as a DICOM image to get the image data as a NumPy array
