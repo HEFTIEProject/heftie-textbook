@@ -146,7 +146,7 @@ Each job will read a single chunk of data from an input array, apply our functio
 
 This uses the concept of a 'delayed' function, taken from the [`joblib`](https://joblib.readthedocs.io) Python library.
 When a delayed function is called, it is not run, but instead a reference to the function and the arguments to be applied to it are saved.
-Lets see how this works with a simple exmaple:
+Lets see how this works with a simple example:
 
 ```{code-cell} ipython3
 import joblib
@@ -161,7 +161,7 @@ print(job)
 ```
 
 We can tell that because nothing has been printed, the function hasn't been run.
-The result is a tuple, containing the funciton, any arguments, and any keyword arguments to be applied to it.
+The result is a tuple, containing the function, any arguments, and any keyword arguments to be applied to it.
 We can run the job manually:
 
 ```{code-cell} ipython3
@@ -181,9 +181,15 @@ results = executor(jobs)
 print(results)
 ```
 
+With knowledge of delayed function, we can create a delayed function to process individual slices of an array
+
 ```{code-cell} ipython3
 delayed_apply_to_slice = joblib.delayed(apply_to_slice)
+```
 
+And then use this to create a function that will set up jobs to apply another function across every chunk of a Zarr array
+
+```{code-cell} ipython3
 def elementwise_jobs(
     f: Callable[[npt.NDArray[Any]], npt.NDArray[Any]],
     *,
@@ -209,9 +215,7 @@ def elementwise_jobs(
     ]
 ```
 
-```{code-cell} ipython3
-
-```
+Lets make some use of this function, to threshold an image using a thresholding function.
 
 ```{code-cell} ipython3
 import numpy as np
@@ -219,6 +223,8 @@ import numpy as np
 def threshold(array):
     return np.clip(array, 128, 256)
 ```
+
+First, setup an output array and check it's empty
 
 ```{code-cell} ipython3
 from data_helpers import plot_slice
@@ -232,6 +238,8 @@ plot_slice(heart_image, z_idx=65, ax=axs[0])
 plot_slice(thresholded_image, z_idx=65, ax=axs[1])
 ```
 
+Then setup the jobs...
+
 ```{code-cell} ipython3
 thresholded_image = zarr.empty_like(heart_image)
 jobs = elementwise_jobs(threshold, input_array=heart_image, output_array=thresholded_image)
@@ -240,10 +248,13 @@ print("First job:")
 pprint(jobs[0])
 ```
 
+...run them...
+
 ```{code-cell} ipython3
-for job, args, kwargs in jobs:
-    job(*args, **kwargs)
+executor(jobs);
 ```
+
+... and check the results:
 
 ```{code-cell} ipython3
 fig, axs = plt.subplots(ncols=2)
