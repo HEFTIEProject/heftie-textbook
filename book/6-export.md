@@ -78,9 +78,8 @@ To view the results, we can use the `napari` viewer
 to display the Zarr array including the newly written sub-volume.
 
 ```{code-cell} ipython3
-np_array_all = zarr_array[:,:,:]
 viewer = napari.Viewer()
-new_layer = viewer.add_image(np_array_all)
+new_layer = viewer.add_image(zarr_array)
 napari.run()
 ```
 
