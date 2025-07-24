@@ -35,6 +35,10 @@ To build the book locally run:
 jupyter-book build book
 ```
 
+To develop the book, it's recommended to use `uv`.
+Run `uv run jupyter lab` to start Jupyter, and then navigate to the `book` directory.
+Then right-click on one of the chapters and select "Open With" > "Jupytext Notebook".
+
 ## Funding
 
 This project is funded by the [OSCARS project](https://oscars-project.eu/), which has received funding from the European Commission’s Horizon Europe Research and Innovation programme under grant agreement No. 101129751.
