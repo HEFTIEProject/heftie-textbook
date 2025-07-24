@@ -138,7 +138,7 @@ ds = FileDataset("output.dcm", {}, file_meta=file_meta, preamble=b"\0" * 128)
 # Set required values
 ds.PatientName = "Test^Patient"
 ds.PatientID = "123456"
-ds.Modality = "OT"
+ds.Modality = "CT"
 ds.StudyInstanceUID = "1.2.3"
 ds.SeriesInstanceUID = "1.2.3.1"
 ds.SOPInstanceUID = "1.2.3.1.1"
