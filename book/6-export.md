@@ -40,21 +40,27 @@ To start with we'll load our heart sample dataset, as a zarr array
 and then extract a smaller volume as a NumPy array.
 
 Note: the heart sample dataset is only 200MB,
-so it is small enough to load into memory in this example.
-If you are working with larger datasets, you may
-want to load the data in chunks.
+so the entire dataset could be extracted into a NumPy array (and therefore loaded into memory) if required.
+If you are working with larger datasets, you will need to keep the extracted volume small enough to fit into memory, or extract it as a series of smaller chunks.
 
 ```{code-cell} ipython3
+from pathlib import Path
 import zarr
 import numpy as np
 
-store_path = '200.64um_LADAF-2021-17_heart_complete-organ_pag.zarr'
-zarr_array = zarr.open_array(store_path)
+data_path: data_path = (Path(__file__).parent / "data" / "hoa_heart.zarr").resolve()
+zarr_array = zarr.open_array(data_path)
 np_array = zarr_array[100:200, 100:200, 100:200]
+n_bytes = 100*100*100*zarr_array.dtype.itemsize  
+n_gb = n_bytes / (10**9)
 ```
 
 The next step is to write this NumPy array to a tiff file.
 We'll use the `imageio` library to do this.
+
+Processing of the sub-volume can be done using any tool
+that can read and write tiff files.
+For example, you could use `Napari`.
 
 The `imageio` library is used to then read the
 tiff file back into a NumPy array.
@@ -118,7 +124,6 @@ saved as a DICOM file.
 
 
 ```{code-cell} ipython3
-import numpy as np
 import pydicom
 from pydicom.dataset import Dataset, FileDataset
 import datetime
@@ -167,3 +172,9 @@ data = ds.pixel_array
 ```
 
 Both the NIfTI and DICOM sub-volumes can be viewed in open-source viewers such as `ITK-SNAP` (see [ITK-SNAP site](https://www.itksnap.org/pmwiki/pmwiki.php)).
+
+Note: This process is more complex for OME-Zarr images
+that have a series of different resolution levels.
+When writing the processed sub-volume back to the
+OME-Zarr image, you will need to ensure that the
+resolution levels are updated correctly.
