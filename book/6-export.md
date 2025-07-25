@@ -90,6 +90,23 @@ napari.run()
 
 +++
 
+## Conversion Format Comparison
+
+The following table summarizes the different file formats for converting Zarr sub-volumes, their associated tools, and trade-offs:
+
+| Format | Tool/Library | Advantages | Disadvantages | Open Source Viewers |
+|--------|--------------|------------|---------------|---------------------|
+| **TIFF** | [imageio](https://imageio.readthedocs.io/) | • Widely supported<br>• Preserves bit depth<br>• Good for microscopy workflows<br>• Fast read/write | • Limited metadata support<br>• Large file sizes<br>• No compression by default | Napari, ImageJ, Fiji |
+| **NIfTI** | [nibabel](https://nipy.org/nibabel/) | • Medical imaging standard<br>• Rich metadata (orientation, spacing)<br>• Good compression<br>• ITK-SNAP, FSL, AFNI support | • Medical imaging specific<br>• Limited to certain data types<br>• Complex coordinate systems | ITK-SNAP, FSL, AFNI |
+| **DICOM** | [pydicom](https://pydicom.github.io/) | • Clinical standard<br>• Extensive metadata<br>• Patient/study information<br>• Universal medical viewer support | • Complex format<br>• Large overhead<br>• Requires many mandatory fields<br>• Slow for large volumes | OsiriX, RadiAnt, Horos |
+| **NumPy** | [numpy](https://numpy.org/) | • Direct array format<br>• Fast loading<br>• Preserves exact data<br>• Python native | • No metadata<br>• Large file sizes<br>• Python ecosystem only | None (Python only) |
+
+### Recommended Use Cases
+
+- **TIFF**: General imaging workflows, microscopy data, when broad tool compatibility is needed
+- **NIfTI**: Medical imaging analysis, neuroimaging studies, when spatial metadata is critical
+- **DICOM**: Clinical workflows, when patient metadata is required, for regulatory compliance
+- **NumPy**: Quick prototyping, Python-only workflows, temporary data exchange
 
 
 
