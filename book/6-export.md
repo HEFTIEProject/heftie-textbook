@@ -55,7 +55,7 @@ The next step is to write this NumPy array to a tiff file.
 We'll use the `imageio` library to do this.
 
 Processing of the sub-volume can be done using any tool that can read and write tiff files.
-For example, you could use `Napari`.
+For example, you could use `Fiji`.
 
 The `imageio` library is used to then read the tiff file back into a NumPy array.
 This subvolume array can then be copied back in place to the original Zarr array.
