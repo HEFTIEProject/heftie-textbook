@@ -36,8 +36,10 @@ import numpy as np
 
 from data_helpers import load_heart_data, plot_slice
 zarr_array = load_heart_data(array_type='zarr')
-slc = [slice(100, 200), slice(100, 200), slice(100, 200)]
-np_array = zarr_array[slc]
+start_idx = 100
+end_idx = 200
+slice_range = slice(start_idx, end_idx)
+np_array = zarr_array[slice_range, slice_range, slice_range]
 n_bytes = np_array.nbytes  
 n_gb = n_bytes / (10**9)
 # Print store information to show data is not loaded into memory
