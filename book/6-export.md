@@ -34,8 +34,8 @@ from pathlib import Path
 import zarr
 import numpy as np
 
-data_path: data_path = (Path(__file__).parent / "data" / "hoa_heart.zarr").resolve()
-zarr_array = zarr.open_array(data_path)
+from data_helpers import load_heart_data, plot_slice
+zarr_array = load_heart_data(array_type='zarr')
 slc = [slice(100, 200), slice(100, 200), slice(100, 200)]
 np_array = zarr_array[slc]
 n_bytes = np_array.nbytes  
