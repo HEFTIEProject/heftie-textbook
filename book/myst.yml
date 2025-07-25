@@ -17,6 +17,7 @@ project:
     - file: 3-remote.md
     - file: 4-processing.md
     - file: 5-visualising.md
+    - file: 6-export.md
     - file: appendices.md
 site:
   nav:
