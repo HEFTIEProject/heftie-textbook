@@ -16,7 +16,7 @@ kernelspec:
 
 +++
 
-In this chapter we'll look at how to convert sub-volumes of 3D zarr images to and from other file formats.
+In this chapter we'll look at how to convert sub-volumes of 3D zarr images to other file formats.
 The use case for this is allow users to extract sub-volumes of large 3D images into a preferred file format,
 perform some analysis/processing on the sub-volume using their preferred tools and then
 copy the results back in-place to the original zarr image.
