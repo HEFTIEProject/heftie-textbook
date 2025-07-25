@@ -19,16 +19,6 @@ kernelspec:
 In this chapter we'll look at how to convert sub-volumes of 3D zarr images to other file formats.
 The use case for this is allow users to extract sub-volumes of large 3D images into a preferred file format, perform some analysis/processing on the sub-volume using their preferred tools and then copy the results back in-place to the original zarr image.
 
-
-```{code-cell} ipython3
-import napari
-
-import nibabel as nib
-import pydicom
-from pydicom.dataset import Dataset, FileDataset
-import datetime
-```
-
 ## Converting Zarr sub-volumes to tiff
 
 To begin this chapter, we'll look at how to convert Zarr sub-volumes to tiff.
@@ -37,6 +27,7 @@ To start with we'll load our heart sample dataset, as a zarr array and then extr
 
 Note: the heart sample dataset is only 200MB, so the entire dataset could be extracted into a NumPy array (and therefore loaded into memory) if required.
 If you are working with larger datasets, you will need to keep the extracted volume small enough to fit into memory, or extract it as a series of smaller chunks.
+If you are using an in-memory Zarr store, then the entire dataset will be loaded into memory regardless of the size of the sub-volume you extract.
 
 ```{code-cell} ipython3
 from pathlib import Path
@@ -71,21 +62,24 @@ This subvolume array can then be copied back in place to the original Zarr array
 import imageio.v3 as iio
 iio.imwrite("image_file.tiff", np_array, plugin='tifffile')
 
-# Do some processing with another tool / software here...
+# Do some processing with another tool / software here e.g. Fiji
 # Then load the result:
-sub_array = iio.imread("image_file.tiff", plugin='tifffile')
+sub_array = iio.imread("image_file_processed.tiff", plugin='tifffile')
 
 zarr_array[100:200, 100:200, 100:200]=zarr_small
 
 
 ```
 
-To view the results, we can use the `napari` viewer to display the Zarr array including the newly written sub-volume.
+To compare the original and processed sub-volumes, we can visualize them side by side using `matplotlib`.
 
 ```{code-cell} ipython3
-viewer = napari.Viewer()
-new_layer = viewer.add_image(zarr_array)
-napari.run()
+from data_helpers import plot_slice
+import matplotlib.pyplot as plt
+
+fig, axs = plt.subplots(ncols=2)
+plot_slice(np_array, z_idx=65, ax=axs[0])
+plot_slice(sub_array, z_idx=65, ax=axs[1])
 ```
 
 +++
