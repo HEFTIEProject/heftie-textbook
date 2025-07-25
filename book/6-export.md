@@ -21,7 +21,6 @@ The use case for this is allow users to extract sub-volumes of large 3D images i
 perform some analysis/processing on the sub-volume using their preferred tools and then
 copy the results back in-place to the original zarr image.
 
-Note: this chapter (and the whole of the textbook) uses Zarr version 2 and OME-Zarr version 0.4. Although newer versions exist (Zarr version 3 and OME-Zarr version 0.5), software tools have not quite caught up to support the newer versions.
 
 ```{code-cell} ipython3
 import napari
