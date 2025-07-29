@@ -53,7 +53,7 @@ print(f"Sub-volume size: {n_gb:.3f} GB")
 print(f"Only the requested slice is loaded into memory as a NumPy array")
 ```
 
-The next step is to write this NumPy array to a tiff file.
+The next step is to write this NumPy array to a TIFF file.
 We'll use the `imageio` library to do this.
 
 Processing of the sub-volume can be done using any tool that can read and write tiff files.
