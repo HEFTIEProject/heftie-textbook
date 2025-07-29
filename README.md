@@ -32,7 +32,7 @@ This book is built using [Jupyter Book](https://jupyterbook.org/en/stable/intro.
 To build the book locally run:
 
 ```bash
-jupyter-book build book
+jupyter book start --execute
 ```
 
 ## Funding
