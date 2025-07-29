@@ -174,16 +174,18 @@ kwargs = job[2]
 function(*args, **kwargs)
 ```
 
-Alternatively `joblib` has a builtin class to automatically execute many jobs in parallel:
+Alternatively `joblib` has a builtin class, `joblib.Parallel`, to automatically execute many jobs in parallel[^joblib-backend]:
+
+[^joblib-backend]: Because of the way this textbook is built, we've had to manually specify `backend='threading'`. You shouldn't have to specify the `backend` parameter when running code yourself - for more info see the [`joblib.Parallel` documentation](https://joblib.readthedocs.io/en/stable/generated/joblib.Parallel.html#joblib-parallel).
 
 ```{code-cell} ipython3
 jobs = [
     delayed_add(3, y=4),
     delayed_add(2, y=1)
 ]
-executor = joblib.Parallel(n_jobs=2)
+executor = joblib.Parallel(n_jobs=2, backend='threading')
 results = executor(jobs)
-print(results)
+print(f"{results=}")
 ```
 
 With knowledge of delayed function, we can create a delayed function to process individual chunks of an array
