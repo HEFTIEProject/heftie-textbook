@@ -38,8 +38,8 @@ from data_helpers import load_heart_data, plot_slice
 zarr_array = load_heart_data(array_type='zarr')
 original_array = zarr_array[:, :, :].copy()  # Copy with original data
 changed_array = zarr_array[:, :, :].copy()  # Copy for processed data
-start_idx = 400
-end_idx = 500
+start_idx = 40
+end_idx = 50
 slice_range = slice(start_idx, end_idx)
 np_array = zarr_array[slice_range, slice_range, slice_range]
 n_bytes = np_array.nbytes  
@@ -64,29 +64,30 @@ This subvolume array can then be copied back in place to the original Zarr array
 
 ```{code-cell} ipython3
 import imageio.v3 as iio
-iio.imwrite("image_file.tiff", np_array, plugin='tifffile')
+# iio.imwrite("image_file.tiff", np_array, plugin='tifffile')
+zarr_small = np_array
 
 # Do some processing with another tool / software here e.g. Fiji
-# Then load the result:
-zarr_small = np_array
 sub_array = zarr.zeros_like(zarr_small)
 
-original_array[400:500, 400:500, 400:500]=zarr_small
+# Then load the result:
+# sub_array = iio.imread("image_file.tiff", plugin='tifffile')
+
+original_array[40:50, 40:50, 40:50]=zarr_small # Insert non-processed data
 
 changed_array[slice_range, slice_range, slice_range] = sub_array  # Insert processed data
 
 
 ```
 
-To compare the original and processed sub-volumes, we can visualize them side by side using `matplotlib`.
+To compare the original and processed sub-volumes being inserted back into the image, we can visualize them side by side using `matplotlib`.
 
 ```{code-cell} ipython3
 from data_helpers import plot_slice
 import matplotlib.pyplot as plt
 
-fig, axs = plt.subplots(ncols=2)
-plot_slice(original_array, z_idx=450, ax=axs[0])
-plot_slice(changed_array, z_idx=450, ax=axs[1])
+plot_slice(original_array, z_idx=45)
+plot_slice(changed_array, z_idx=45)
 ```
 
 +++
