@@ -115,8 +115,11 @@ def apply_to_chunk(
     chunk_index :
         Array slice of data to process.
     """
-    print(f"Copying index {slc}...")
-    output_array[chunk_index] = f(input_array[chunk_index])
+    print(f"Reading index {slc}...")
+    chunk = input_array[chunk_index]
+    chunk = f(chunk)
+    print(f"Writing index {slc}...")
+    output_array[chunk_index] = chunk
 ```
 
 And third, a function to double check two Zarr arrays have the same shape and chunks:
