@@ -39,31 +39,39 @@ import numpy as np
 
 from data_helpers import load_heart_data, plot_slice
 zarr_array = load_heart_data(array_type='zarr')
-original_array = zarr_array[:, :, :].copy()  # Copy with original data
-changed_array = zarr_array[:, :, :].copy()  # Copy for processed data
-start_idx = 40
-end_idx = 50
-slice_range = slice(start_idx, end_idx)
-np_array = zarr_array[slice_range, slice_range, slice_range]
-n_bytes = np_array.nbytes  
-n_gb = n_bytes / (10**9)
-# Print store information to show data is not loaded into memory
+
+n_bytes = zarr_array.nbytes  
+n_mb = n_bytes / (10**6)
+
 print(f"Zarr array store: {zarr_array.store}")
 print(f"Zarr array shape: {zarr_array.shape}")
 print(f"Zarr array dtype: {zarr_array.dtype}")
 print(f"Zarr array chunks: {zarr_array.chunks}")
-print(f"Sub-volume size: {n_gb:.3f} GB")
-print(f"Only the requested slice is loaded into memory as a NumPy array")
+print(f"Zarr array size: {n_mb:.3f} MB")
+
+```
+
+The output above shows that we have created a Zarr array object, but importantly, the data itself has not been loaded into memory yet.
+The store information tells us that the data is stored in a Zarr storage backend - with each chunk stored as a separate file on disk rather than in memory.
+This lazy loading approach is one of the key advantages of Zarr - you can work with arrays much larger than your available RAM.
+
+Now let's extract a small sub-volume from the Zarr array. This operation will only load the requested slice into memory as a NumPy array, leaving the rest of the data untouched:
+
+
+```{code-cell} ipython3
+start_idx = 40
+end_idx = 50
+slice_range = slice(start_idx, end_idx)
+np_array = zarr_array[slice_range, slice_range, slice_range]
+n_bytes = np_array.nbytes
+n_mb = n_bytes / (10**6)
+print(f"Extracted sub-volume array shape: {np_array.shape}")
+print(f"Extracted array dtype: {np_array.dtype}")
+print(f"Extracted sub-volume size: {n_mb:.3f} MB")
 ```
 
 The next step is to write this NumPy array to a TIFF file.
-We'll use the `imageio` library to do this.
-
-Processing of the sub-volume can be done using any tool that can read and write TIFF files.
-For example, you could use `Fiji`.
-
-The `imageio` library is used to then read the TIFF file back into a NumPy array.
-This subvolume array can then be copied back in place to the original Zarr array.
+We would use the `imageio` library to do this, but for this tutorial we won't actually write the file to disk.
 
 ```{code-cell} ipython3
 import imageio.v3 as iio
@@ -72,8 +80,10 @@ zarr_small = np_array
 
 ```
 
-Some processing can be done on the sub-volume here, for example using `Fiji` or any other tool that can read and write TIFF files.
+Some processing can be done on the sub-volume , for example using `Fiji` or any other tool that can read and write TIFF files.
 For the purposes of this tutorial, we'll fake some processing by creating a sub_array of the same shape as the original sub-volume, but filled with zeros.
+The `imageio` library can be used to then read the TIFF file back into a NumPy array.
+This subvolume array can then be copied back in place to the original Zarr array.
 
 ```{code-cell} ipython3
 
@@ -81,7 +91,11 @@ For the purposes of this tutorial, we'll fake some processing by creating a sub_
 # sub_array = iio.imread("image_file.tiff", plugin='tifffile')
 
 # This simulates a processed sub-volume
-sub_array = zarr.zeros_like(zarr_small) 
+sub_array = zarr.zeros_like(zarr_small)
+
+
+original_array = zarr_array[:, :, :]  # full NumPy array for inserting non-processed sub-volume
+changed_array = zarr_array[:, :, :]  # full NumPy array for inserting processed sub-volume
 
 original_array[40:50, 40:50, 40:50]=zarr_small # Insert non-processed data
 changed_array[slice_range, slice_range, slice_range] = sub_array  # Insert processed data
