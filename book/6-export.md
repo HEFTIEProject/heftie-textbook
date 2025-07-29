@@ -94,7 +94,7 @@ plot_slice(changed_array, z_idx=45)
 
 ## Conversion Format Comparison
 
-The following table summarizes the different file formats for converting Zarr sub-volumes, their associated tools, and trade-offs:
+The following table summarizes some other commonly used filed formats that have Python tools available for saving NumPy arrays to:
 
 | Format | Tool/Library | Advantages | Disadvantages | Open Source Viewers |
 |--------|--------------|------------|---------------|---------------------|
