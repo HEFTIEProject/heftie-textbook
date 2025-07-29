@@ -22,7 +22,7 @@ Although the examples here below operate on small arrays, the theory and techniq
 
 When we process an array, we are transforming it in some way and creating a new array - think of this as a mapping from one array to another.
 Because a Zarr array is split into chunks, we can split up this mapping into many smaller jobs.
-When writing a Zarr array whole chunks are compressed at written in one go, so it makes sense to break down the task into a mapping a mapping from the input array to each individual output chunk, and then create one job for each output chunk.
+When writing a Zarr array whole chunks are compressed and written in one go, so it makes sense to break down the task into a mapping from the input array to each individual output chunk, and then create one job for each output chunk.
 This will allow us to compute each output chunk independently, which has two large benefits:
 
 - For each job we only need to load the data into memory needed to compute a single output chunk
@@ -47,7 +47,7 @@ Element-wise operations are those where there's an exact one-to-one mapping from
 This makes parallelising very simple - we can write a function that takes one chunk (an array), and returns another chunk (another array) that has the same shape.
 
 Before we get into this we'll setup a few helper functions.
-First, a function that generates slices for every chunk in a Zarr array:
+First, a function that generates the array indices of every chunk in a Zarr array:
 
 ```{code-cell} ipython3
 from rich import print as pprint
@@ -60,9 +60,9 @@ from typing import Generator
 import zarr
 
 
-def all_chunk_slices(array: zarr.Array) -> Generator[tuple[slice, ...], None, None]:
+def all_chunk_indices(array: zarr.Array) -> Generator[tuple[slice, ...], None, None]:
     """
-    Generate slices that represent all chunks in a Zarr Array.
+    Generate indices that represent all chunks in a Zarr Array.
     """
     ndim = len(array.shape)
     indices = [range(0, array.shape[i], array.chunks[i]) for i in range(ndim)]
@@ -82,12 +82,12 @@ from data_helpers import load_heart_data
 heart_image = load_heart_data(array_type='zarr')
 print(f"Array shape: {heart_image.shape}")
 print(f"Chunk shape: {heart_image.chunks}")
-print("Chunk slices:")
-for slc in all_chunk_slices(heart_image):
+print("Chunk indices:")
+for slc in all_chunk_indices(heart_image):
     print(slc)
 ```
 
-Second, a function to copy a slice of data from one array to another:
+Second, a function to copy a chunk of data from one array to another:
 
 ```{code-cell} ipython3
 from collections.abc import Callable
@@ -95,14 +95,14 @@ from typing import Any
 
 import numpy.typing as npt
 
-def apply_to_slice(
+def apply_to_chunk(
     f: Callable[[npt.NDArray[Any]], npt.NDArray[Any]],
     input_array: zarr.Array,
     output_array: zarr.Array,
-    slc: slice,
+    chunk_index: slice,
 ) -> None:
     """
-    Copy a specific slice of data from one array to another, applying a function in between.
+    Copy a specific chunk of data from one array to another, applying a function in between.
 
     Parameters
     ----------
@@ -112,11 +112,11 @@ def apply_to_slice(
         Array to read from.
     output_array :
         Array to write to.
-    slc :
-        Slice of data to process.
+    chunk_index :
+        Array slice of data to process.
     """
-    print(f"Copying slice {slc}...")
-    output_array[slc] = f(input_array[slc])
+    print(f"Copying index {slc}...")
+    output_array[chunk_index] = f(input_array[chunk_index])
 ```
 
 And third, a function to double check two Zarr arrays have the same shape and chunks:
@@ -181,10 +181,10 @@ results = executor(jobs)
 print(results)
 ```
 
-With knowledge of delayed function, we can create a delayed function to process individual slices of an array
+With knowledge of delayed function, we can create a delayed function to process individual chunks of an array
 
 ```{code-cell} ipython3
-delayed_apply_to_slice = joblib.delayed(apply_to_slice)
+delayed_apply_to_chunk = joblib.delayed(apply_to_chunk)
 ```
 
 And then use this to create a function that will set up jobs to apply another function across every chunk of a Zarr array
@@ -201,7 +201,7 @@ def elementwise_jobs(
 
     Parameters
     ----------
-    f : 
+    f :
         Function to apply to each chunk.
     input_array :
         Array to read from.
@@ -210,8 +210,8 @@ def elementwise_jobs(
     """
     check_same_shape(input_array, output_array)
     return [
-        delayed_apply_to_slice(f, input_array, output_array, slc)
-        for slc in all_chunk_slices(output_array)
+        delayed_apply_to_chunk(f, input_array, output_array, index)
+        for index in all_chunk_indices(output_array)
     ]
 ```
 
@@ -278,7 +278,7 @@ If we're downsampling by a factor of two, then our output array will have half t
         input_8 --> output_i
 
         output_i["Chunk i, j, k"]
-        
+
         input_1["Chunk 2i, 2j, 2k"]
         input_2["Chunk 2i, 2j, 2k+1"]
         input_3["Chunk 2i, 2j+1, 2k"]
@@ -297,17 +297,17 @@ If we're upsampling by a factor of two, then our output array will have double t
 
 ```{mermaid}
     flowchart LR
-        output_i --> input_1 
+        output_i --> input_1
         output_i --> input_2
-        output_i --> input_3 
+        output_i --> input_3
         output_i --> input_4
-        output_i --> input_5 
+        output_i --> input_5
         output_i --> input_6
         output_i --> input_7
         output_i --> input_8
 
         output_i["Chunk i, j, k"]
-        
+
         input_1["Chunk 2i, 2j, 2k"]
         input_2["Chunk 2i, 2j, 2k+1"]
         input_3["Chunk 2i, 2j+1, 2k"]
