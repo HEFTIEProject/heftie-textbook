@@ -165,18 +165,20 @@ The result is a tuple, containing the function, any arguments, and any keyword a
 We can run the job manually:
 
 ```{code-cell} ipython3
-function, args, kwargs = job
+function = job[0]
+args = job[1]
+kwargs = job[2]
 function(*args, **kwargs)
 ```
 
-Alternatively `joblib` has a builtin class to execute many jobs in parallel:
+Alternatively `joblib` has a builtin class to automatically execute many jobs in parallel:
 
 ```{code-cell} ipython3
 jobs = [
     delayed_add(3, y=4),
     delayed_add(2, y=1)
 ]
-executor = joblib.Parallel(n_jobs=1)
+executor = joblib.Parallel(n_jobs=2)
 results = executor(jobs)
 print(results)
 ```
@@ -215,12 +217,15 @@ def elementwise_jobs(
     ]
 ```
 
-Lets make some use of this function, to threshold an image using a thresholding function.
+Lets make some use of this function, to clip an image:
 
 ```{code-cell} ipython3
 import numpy as np
 
-def threshold(array):
+def clip(array):
+    """
+    Clip values of an array to between 128 and 256.
+    """
     return np.clip(array, 128, 256)
 ```
 
@@ -231,18 +236,17 @@ from data_helpers import plot_slice
 import matplotlib.pyplot as plt
 
 heart_image = load_heart_data(array_type='zarr')
-thresholded_image = zarr.zeros_like(heart_image)
+clipped_image = zarr.zeros_like(heart_image)
 
 fig, axs = plt.subplots(ncols=2)
 plot_slice(heart_image, z_idx=65, ax=axs[0])
-plot_slice(thresholded_image, z_idx=65, ax=axs[1])
+plot_slice(clipped_image, z_idx=65, ax=axs[1])
 ```
 
 Then setup the jobs...
 
 ```{code-cell} ipython3
-thresholded_image = zarr.empty_like(heart_image)
-jobs = elementwise_jobs(threshold, input_array=heart_image, output_array=thresholded_image)
+jobs = elementwise_jobs(clip, input_array=heart_image, output_array=clipped_image)
 print(f"Number of jobs: {len(jobs)}")
 print("First job:")
 pprint(jobs[0])
@@ -259,7 +263,7 @@ executor(jobs);
 ```{code-cell} ipython3
 fig, axs = plt.subplots(ncols=2)
 plot_slice(heart_image, z_idx=65, ax=axs[0])
-plot_slice(thresholded_image, z_idx=65, ax=axs[1])
+plot_slice(clipped_image, z_idx=65, ax=axs[1])
 ```
 
 ### Downsampling
