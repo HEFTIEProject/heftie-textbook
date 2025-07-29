@@ -174,7 +174,9 @@ kwargs = job[2]
 function(*args, **kwargs)
 ```
 
-Alternatively `joblib` has a builtin class, `joblib.Parallel`, to automatically execute many jobs in parallel[^joblib-backend]:
+Alternatively `joblib` has a builtin class, `joblib.Parallel`, to automatically execute many jobs in parallel[^joblib-backend].
+The `n_jobs` parameter controls the maximum number of concurrently running jobs.
+Commonly you'll either want to set `n_jobs=-1` to use all available CPUs, or set it to a custom number to limit the memory usage of multiple jobs running at the same time.
 
 [^joblib-backend]: Because of the way this textbook is built, we've had to manually specify `backend='threading'`. You shouldn't have to specify the `backend` parameter when running code yourself - for more info see the [`joblib.Parallel` documentation](https://joblib.readthedocs.io/en/stable/generated/joblib.Parallel.html#joblib-parallel).
 
@@ -188,13 +190,13 @@ results = executor(jobs)
 print(f"{results=}")
 ```
 
-With knowledge of delayed function, we can create a delayed function to process individual chunks of an array
+With knowledge of delayed functions, we can create a delayed function to process individual chunks of an array:
 
 ```{code-cell} ipython3
 delayed_apply_to_chunk = joblib.delayed(apply_to_chunk)
 ```
 
-And then use this to create a function that will set up jobs to apply another function across every chunk of a Zarr array
+And then use this to create a function that will set up jobs to apply another function across every chunk of a Zarr array:
 
 ```{code-cell} ipython3
 def chunkwise_jobs(
