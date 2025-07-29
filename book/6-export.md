@@ -36,8 +36,10 @@ import numpy as np
 
 from data_helpers import load_heart_data, plot_slice
 zarr_array = load_heart_data(array_type='zarr')
-start_idx = 100
-end_idx = 200
+original_array = zarr_array[:, :, :].copy()  # Copy with original data
+changed_array = zarr_array[:, :, :].copy()  # Copy for processed data
+start_idx = 400
+end_idx = 500
 slice_range = slice(start_idx, end_idx)
 np_array = zarr_array[slice_range, slice_range, slice_range]
 n_bytes = np_array.nbytes  
@@ -66,9 +68,12 @@ iio.imwrite("image_file.tiff", np_array, plugin='tifffile')
 
 # Do some processing with another tool / software here e.g. Fiji
 # Then load the result:
-sub_array = iio.imread("image_file_processed.tiff", plugin='tifffile')
+zarr_small = iio.imread("image_file_processed.tiff", plugin='tifffile')
+sub_array = zarr.zeros_like(zarr_small)
 
-zarr_array[100:200, 100:200, 100:200]=zarr_small
+original_array[400:500, 400:500, 400:500]=zarr_small
+
+changed_array[slice_range, slice_range, slice_range] = sub_array  # Insert processed data
 
 
 ```
@@ -80,8 +85,8 @@ from data_helpers import plot_slice
 import matplotlib.pyplot as plt
 
 fig, axs = plt.subplots(ncols=2)
-plot_slice(np_array, z_idx=65, ax=axs[0])
-plot_slice(sub_array, z_idx=65, ax=axs[1])
+plot_slice(original_array, z_idx=450, ax=axs[0])
+plot_slice(changed_array, z_idx=450, ax=axs[1])
 ```
 
 +++
