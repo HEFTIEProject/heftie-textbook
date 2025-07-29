@@ -68,7 +68,7 @@ iio.imwrite("image_file.tiff", np_array, plugin='tifffile')
 
 # Do some processing with another tool / software here e.g. Fiji
 # Then load the result:
-zarr_small = iio.imread("image_file_processed.tiff", plugin='tifffile')
+zarr_small = np_array
 sub_array = zarr.zeros_like(zarr_small)
 
 original_array[400:500, 400:500, 400:500]=zarr_small
