@@ -32,9 +32,9 @@ To start with lets look at the simplest possible mapping from input chunks to ou
 
 +++
 
-## Element-wise operations
+## Simple operations
 
-Element-wise operations are those where there's an exact one-to-one mapping from input chunks to output chunks.
+In the context of this chapter, simple operations are those where there's an exact one-to-one mapping from input chunks to output chunks.
 
 ```{mermaid}
     flowchart LR
@@ -192,7 +192,7 @@ delayed_apply_to_chunk = joblib.delayed(apply_to_chunk)
 And then use this to create a function that will set up jobs to apply another function across every chunk of a Zarr array
 
 ```{code-cell} ipython3
-def elementwise_jobs(
+def chunkwise_jobs(
     f: Callable[[npt.NDArray[Any]], npt.NDArray[Any]],
     *,
     input_array: zarr.Array,
@@ -246,7 +246,7 @@ plot_slice(clipped_image, z_idx=65, ax=axs[1])
 Then setup the jobs...
 
 ```{code-cell} ipython3
-jobs = elementwise_jobs(clip, input_array=heart_image, output_array=clipped_image)
+jobs = chunkwise_jobs(clip, input_array=heart_image, output_array=clipped_image)
 print(f"Number of jobs: {len(jobs)}")
 print("First job:")
 pprint(jobs[0])
