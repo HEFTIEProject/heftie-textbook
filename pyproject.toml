@@ -14,10 +14,15 @@ dependencies = [
     "rich==14.1.0",
     "pydantic-zarr==0.7.0",
     "ome-zarr-models==0.1.9",
+    "joblib==1.5.1",
 ]
 
 [tool.setuptools]
 packages = []
 
 [dependency-groups]
-dev = ["jupyterlab==4.3.0", "jupytext==1.16.4"]
+dev = [
+    "jupyter-ruff>=0.3.0",
+    "jupyterlab==4.3.0",
+ "jupytext==1.16.4",
+]
