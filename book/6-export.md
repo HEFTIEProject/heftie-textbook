@@ -1,20 +1,19 @@
 ---
-jupytext:
-  formats: md:myst
-  text_representation:
-    extension: .md
-    format_name: myst
-    format_version: 0.13
-    jupytext_version: 1.16.4
-kernelspec:
-  display_name: Python 3 (ipykernel)
-  language: python
-  name: python3
+jupyter:
+  jupytext:
+    text_representation:
+      extension: .md
+      format_name: markdown
+      format_version: '1.3'
+      jupytext_version: 1.16.4
+  kernelspec:
+    display_name: heftie-textbook
+    language: python
+    name: python3
 ---
 
 # Exporting
 
-+++
 
 In this chapter we'll look at how to convert sub-volumes of 3D Zarr images to other file formats.
 The use case for this is allow users to extract sub-volumes of large 3D images into a preferred file format, perform some analysis/processing on the sub-volume using their preferred tools and then copy the results back in-place to the original Zarr image.
@@ -38,9 +37,10 @@ import zarr
 import numpy as np
 
 from data_helpers import load_heart_data, plot_slice
-zarr_array = load_heart_data(array_type='zarr')
 
-n_bytes = zarr_array.nbytes  
+zarr_array = load_heart_data(array_type="zarr")
+
+n_bytes = zarr_array.nbytes
 n_mb = n_bytes / (10**6)
 
 print(f"Zarr array store: {zarr_array.store}")
@@ -56,7 +56,6 @@ The store information tells us that the data is stored in a Zarr storage backend
 This lazy loading approach is one of the key advantages of Zarr - you can work with arrays much larger than your available RAM.
 
 Now let's extract a small sub-volume from the Zarr array. This operation will only load the requested slice into memory as a NumPy array, leaving the rest of the data untouched:
-
 
 ```{code-cell} ipython3
 start_idx = 40
@@ -86,7 +85,6 @@ The `imageio` library can be used to then read the TIFF file back into a NumPy a
 This subvolume array can then be copied back in place to the original Zarr array.
 
 ```{code-cell} ipython3
-
 # Loading the result back into a NumPy array if processed with another tool:
 # sub_array = iio.imread("image_file.tiff", plugin='tifffile')
 
@@ -111,8 +109,6 @@ from data_helpers import plot_slice
 plot_slice(original_array, z_idx=45)
 plot_slice(changed_array, z_idx=45)
 ```
-
-+++
 
 ## Conversion Format Comparison
 
