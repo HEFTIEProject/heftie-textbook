@@ -14,10 +14,8 @@ project:
     - file: home.md
     - file: 1-storage.md
     - file: 2-creation.md
-    - file: 3-remote.md
-    - file: 4-processing.md
-    - file: 5-visualising.md
-    - file: 6-export.md
+    - file: 3-processing.md
+    - file: 4-export.md
     - file: appendices.md
 site:
   nav:
