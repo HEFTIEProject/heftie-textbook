@@ -13,13 +13,22 @@ The key to answering this question comes in two parts:
 1. Breaking down images into smaller files, or 'chunks' that are small enough to individually fit in memory.
 2. Creating a series of downsampled versions of datasets, so it's possible to view a low resolution version of the whole dataset, but still zoom in and load high resolution regions of interest.
 
-## How to use this textbook
+## Using this textbook
 
-## Contents
+### Pre-requisites
 
-```{tableofcontents}
+This textbook assumes some familiarity with images and basic Python programming.
+The [Introduction to Bioimage Analysis textbook](https://bioimagebook.github.io) has a good primer on images in the context of both Python and Biology.
 
-```
+### Reading the textbook
+
+Every chapter is designed to be read from start to end in one sitting.
+Each chapter builds upon the previous ones, so they should be read in order.
+It is not designed to have hands-on examples, and should complement other resources that provide interactive lessons, such as the [OME-Zarr lesson in the Bioimage Analysis Training Resources](https://neubias.github.io/training-resources/ome_zarr/index.html).
+
+### Running code
+
+It's not necessary to run the code while reading, but if you want to...
 
 ## Acknowledgements
 
