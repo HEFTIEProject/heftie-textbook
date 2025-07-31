@@ -1,19 +1,21 @@
 ---
-jupyter:
-  jupytext:
-    text_representation:
-      extension: .md
-      format_name: markdown
-      format_version: '1.3'
-      jupytext_version: 1.16.4
-  kernelspec:
-    display_name: heftie-textbook
-    language: python
-    name: python3
+jupytext:
+  formats: md:myst
+  text_representation:
+    extension: .md
+    format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.16.4
+kernelspec:
+  display_name: Python 3 (ipykernel)
+  language: python
+  name: python3
+authors:
+  - id: dstansby
+  - id: ruaridhg
 ---
 
 # Exporting
-
 
 In this chapter we'll look at how to convert sub-volumes of 3D Zarr images to other file formats.
 The use case for this is allow users to extract sub-volumes of large 3D images into a preferred file format, perform some analysis/processing on the sub-volume using their preferred tools and then copy the results back in-place to the original Zarr image.
@@ -114,11 +116,11 @@ plot_slice(changed_array, z_idx=45)
 
 The following table summarizes some other commonly used filed formats that have Python tools available for saving NumPy arrays to:
 
-| Format | Tool/Library | Advantages | Disadvantages | Open Source Viewers | Recommended Use Cases |
-|--------|--------------|------------|---------------|---------------------| -----------------------|
-| **TIFF** | [imageio](https://imageio.readthedocs.io/) | • Widely supported<br>• Preserves bit depth<br>• Good for microscopy workflows<br>• Fast read/write | • Limited metadata support<br>• Large file sizes<br>• No compression by default | Napari, ImageJ, Fiji | General imaging workflows, microscopy data, when broad tool compatibility is needed |
-| **NIfTI** | [nibabel](https://nipy.org/nibabel/) | • Medical imaging standard<br>• Rich metadata (orientation, spacing)<br>• Good compression<br>• ITK-SNAP, FSL, AFNI support | • Medical imaging specific<br>• Limited to certain data types<br>• Complex coordinate systems | ITK-SNAP, FSL, AFNI | Medical imaging analysis, neuroimaging studies, when spatial metadata is critical |
-| **DICOM** | [pydicom](https://pydicom.github.io/) | • Clinical standard<br>• Extensive metadata<br>• Patient/study information<br>• Universal medical viewer support | • Complex format<br>• Large overhead<br>• Requires many mandatory fields<br>• Slow for large volumes | OsiriX, RadiAnt, Horos | Clinical workflows, when patient metadata is required, for regulatory compliance |
-| **NumPy** | [numpy](https://numpy.org/) | • Direct array format<br>• Fast loading<br>• Preserves exact data<br>• Python native | • No metadata<br>• Large file sizes<br>• Python ecosystem only | None (Python only) | Quick prototyping, Python-only workflows, temporary data exchange |
+| Format    | Tool/Library                               | Advantages                                                                                                                  | Disadvantages                                                                                        | Open Source Viewers    | Recommended Use Cases                                                               |
+| --------- | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------- | ----------------------------------------------------------------------------------- |
+| **TIFF**  | [imageio](https://imageio.readthedocs.io/) | • Widely supported<br>• Preserves bit depth<br>• Good for microscopy workflows<br>• Fast read/write                         | • Limited metadata support<br>• Large file sizes<br>• No compression by default                      | Napari, ImageJ, Fiji   | General imaging workflows, microscopy data, when broad tool compatibility is needed |
+| **NIfTI** | [nibabel](https://nipy.org/nibabel/)       | • Medical imaging standard<br>• Rich metadata (orientation, spacing)<br>• Good compression<br>• ITK-SNAP, FSL, AFNI support | • Medical imaging specific<br>• Limited to certain data types<br>• Complex coordinate systems        | ITK-SNAP, FSL, AFNI    | Medical imaging analysis, neuroimaging studies, when spatial metadata is critical   |
+| **DICOM** | [pydicom](https://pydicom.github.io/)      | • Clinical standard<br>• Extensive metadata<br>• Patient/study information<br>• Universal medical viewer support            | • Complex format<br>• Large overhead<br>• Requires many mandatory fields<br>• Slow for large volumes | OsiriX, RadiAnt, Horos | Clinical workflows, when patient metadata is required, for regulatory compliance    |
+| **NumPy** | [numpy](https://numpy.org/)                | • Direct array format<br>• Fast loading<br>• Preserves exact data<br>• Python native                                        | • No metadata<br>• Large file sizes<br>• Python ecosystem only                                       | None (Python only)     | Quick prototyping, Python-only workflows, temporary data exchange                   |
 
 Both the NIfTI and DICOM sub-volumes can be viewed in open-source viewers such as `ITK-SNAP` (see [ITK-SNAP site](https://www.itksnap.org/pmwiki/pmwiki.php)).
