@@ -16,6 +16,7 @@ project:
 
     - name: Ruaridh Gollifer
       id: ruaridhg
+      orcid: 0000-0001-9319-936X
       github: ruaridhg
       affiliations:
         - id: ucl
