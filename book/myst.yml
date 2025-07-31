@@ -3,6 +3,29 @@ project:
   title: Working with enormous 3D imaging datasets
   authors:
     - name: David Stansby
+      id: dstansby
+      orcid: 0000-0002-1365-1908
+      github: dstansby
+      corresponding: true
+      email: d.stansby@ucl.ac.uk
+      affiliations:
+        - id: ucl
+          institution: UCL
+          city: London
+          ror: https://ror.org/02jx3x895
+
+    - name: Ruaridh Gollifer
+      id: ruaridhg
+      github: ruaridhg
+      affiliations:
+        - id: ucl
+
+    - name: Kimberly Meechan
+      id: K-Meech
+      github: K-Meech
+      affiliations:
+        - id: ucl
+
   github: UCL-MSM-Bio/heftie-textbook
   bibliography:
     - references.bib
