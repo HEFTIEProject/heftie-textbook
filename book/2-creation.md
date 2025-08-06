@@ -76,7 +76,7 @@ And some parameters have been filled in automatically for us with default values
 - `fill_value`: the value assumed if no data has been written
 - `order`: the memory order
 - `filters`: any filters applied to the data before being saved
-- `dimension_separateor`: the character separating chunks in different dimensions when the data is saved
+- `dimension_separator`: the character separating chunks in different dimensions when the data is saved
 
 Now we've specified the array configuration, we can convert this to an actual Zarr array.
 To do this we need to create a _store_.

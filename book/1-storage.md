@@ -363,13 +363,13 @@ for i in range(3):
     ax.set_aspect('equal')
     ax.set_title(f"Bin-by-{bin_factor}")
 
-fig.suptitle("OME-Zarr mutliscale image arrays")
+fig.suptitle("OME-Zarr multiscale image arrays")
 fig.tight_layout()
 ```
 
 Using a multiscale image means that if you're viewing the whole zoomed out image you can load a smaller low resolution copy of the image.
 As you zoom in, data from the higher resolutions is successively loaded.
-If you're familiar with Google maps it works on a similar principal - as you zoom in, more detail is loaded in the location you're viewing.
+If you're familiar with Google maps it works on a similar principle - as you zoom in, more detail is loaded in the location you're viewing.
 
 ## Conclusion
 
