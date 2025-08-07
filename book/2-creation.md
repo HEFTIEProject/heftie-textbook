@@ -20,7 +20,7 @@ authors:
 
 In this chapter we'll step through practical examples showing to create chunked datasets.
 To start we'll look at how to create individual Zarr datasets and save them, where each Zarr dataset represents a single 3D image.
-Then we'll look at how to create an OME-Zarr mulitscale image, to to save it, and how to add downsampled images that live alongside the original full resolution image.
+Then we'll look at how to create an OME-Zarr multiscale image, to to save it, and how to add downsampled images that live alongside the original full resolution image.
 
 Note: this chapter (and the whole of the textbook) uses Zarr version 2 and OME-Zarr version 0.4. Although newer versions exist (Zarr version 3 and OME-Zarr version 0.5), software tools have not quite caught up to support the newer versions.
 
