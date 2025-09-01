@@ -7,14 +7,14 @@ requires-python = "==3.12.*"
 dependencies = [
     "imageio[tifffile]==2.37.0",
     "jupyter-book==2.0.0b2",
-    "matplotlib==3.10.5",
+    "matplotlib==3.10.6",
     "numcodecs==0.15.1",
     "numpy==2.3.2",
     "zarr==2.18.7",
     "rich==14.1.0",
     "pydantic-zarr==0.7.0",
     "ome-zarr-models==0.1.10",
-    "joblib==1.5.1",
+    "joblib==1.5.2",
 ]
 
 [tool.setuptools]
@@ -24,5 +24,5 @@ packages = []
 dev = [
     "jupyter-ruff>=0.3.0",
     "jupyterlab==4.4.6",
- "jupytext==1.17.2",
+ "jupytext==1.17.3",
 ]
