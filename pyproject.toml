@@ -23,6 +23,6 @@ packages = []
 [dependency-groups]
 dev = [
     "jupyter-ruff>=0.3.0",
-    "jupyterlab==4.4.7",
+    "jupyterlab==4.4.9",
  "jupytext==1.17.3",
 ]
