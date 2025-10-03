@@ -5,7 +5,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.4
+    jupytext_version: 1.17.3
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -137,9 +137,6 @@ print(f"Directory contents after creating array: {get_directory_contents(temp_pa
 
 zarr_array[:] = heart_image[:]
 print(f"Directory contents after adding data: {get_directory_contents(temp_path)}")
-zarr_array
-
-temp_dir.cleanup()
 ```
 
 After saving the (empty) array, two files are created - '.zarray' and '.zattrs'.
@@ -147,7 +144,14 @@ These store the Zarr array metdadata.
 After adding data to the array, four more folders appear - '0', '1', '2', '3'.
 These folders store the array data.
 
-+++
+For the rest of the tutorial we'll switch back to storing the array in memory.
+
+```{code-cell} ipython3
+store = zarr.MemoryStore()
+zarr_array = array_spec.to_zarr(store=store, path="/")
+zarr_array[:] = heart_image[:]
+temp_dir.cleanup()
+```
 
 ## Creating OME-Zarr datasets
 
@@ -182,7 +186,7 @@ from ome_zarr_models.v04.axes import Axis
 
 voxel_size = 19.89
 ome_zarr_image = Image.new(
-    array_specs = [ArraySpec.from_array(zarr_array)],
+    array_specs = [ArraySpec.from_zarr(zarr_array)],
     paths = ["level0"],
     axes = [
         Axis(name="x", type="space", unit="um"),
@@ -222,7 +226,7 @@ print("After filling:")
 print(level0_array[:, :, 0])
 ```
 
-The real power of OME-Zarr comes from not just storing original high resolution data, but including lower resolution copies alongside. This enables...
+The real power of OME-Zarr comes from not just storing original high resolution data, but including lower resolution copies alongside. This enables the low resolution data to be loaded when looking at the whole image, but as you zoom in higher and higher resolutions of the data are progressively loaded.
 
 Lets remind ourselves of the current datasets in our Image
 
