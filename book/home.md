@@ -20,6 +20,11 @@ The key to answering this question comes in two parts:
 This textbook assumes some familiarity with images and basic Python programming.
 The [Introduction to Bioimage Analysis textbook](https://bioimagebook.github.io) has a good primer on images in the context of both Python and Biology.
 
+The tools and methods in this texbook are tailored to working with big imaging data.
+As a rule of thumb this means data that that you cannot load entirely into memory at once, because it is so big.
+Tackling this data adds complexity to the tools and methods, so if you have smaller data it's recommended that you use other file formats and tools.
+See the [Introduction to Bioimage Analysis textbook](https://bioimagebook.github.io) for other options.
+
 ### Reading the textbook
 
 Every chapter is designed to be read from start to end in one sitting.
