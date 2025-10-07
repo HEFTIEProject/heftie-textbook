@@ -254,7 +254,7 @@ print("Downsampled array specifications: ", downsampled_specs)
 With this new set of array specifications we can create a OME-Zarr image with multiple downsampled levels
 
 ```{code-cell} ipython3
-ome_zarr_image = Image.new(
+multiscale_image = Image.new(
     array_specs = downsampled_specs,
     paths = [f"level{d}" for d in downsample_levels],
     axes = [
@@ -267,5 +267,40 @@ ome_zarr_image = Image.new(
     translations = [[0, 0, 0] for d in downsample_levels],
     name = "heart_image"
 )
-print(ome_zarr_image)
+print(multiscale_image)
+```
+
+As before, we'll save this to to a store, so we can then write the array data
+
+```{code-cell} ipython3
+multiscale_store = zarr.MemoryStore()
+multiscale_group = multiscale_image.to_zarr(multiscale_store, path='')
+print(multiscale_group)
+```
+
+And finally we'll fill up the arrays. The first level is filled with the original image data. Then `scipy.ndimage.zoom` is used to create downsampled versions of the same array to store at the other levels.
+
+```{code-cell} ipython3
+import scipy.ndimage
+
+multiscale_group['level0'][:] = zarr_array[:]
+
+for dataset in multiscale_image.datasets[0][1:]:
+    scale = dataset.coordinateTransformations[0].scale
+    print(scale)
+    downsampled_array = scipy.ndimage.zoom(zarr_array[:], zoom=[1 / s for s in scale])
+    # Write downsampled arrays to Zarr storage
+    multiscale_group[dataset.path][:] = downsampled_array
+```
+
+To double check this has work, lets plot the lowest resolution level.
+
+```{code-cell} ipython3
+level2_dataset = multiscale_image.datasets[0][2]
+print(level2_dataset)
+
+level2_array = multiscale_group[dataset.path]
+print(level2_array)
+
+plot_slice(level2_array, z_idx=17)
 ```
