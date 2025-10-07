@@ -6,7 +6,7 @@ readme = "README.md"
 requires-python = "==3.12.*"
 dependencies = [
     "imageio[tifffile]==2.37.0",
-    "jupyter-book==2.0.0b2",
+    "jupyter-book==2.0.0b3",
     "matplotlib==3.10.6",
     "numcodecs==0.15.1",
     "numpy==2.3.3",
@@ -21,8 +21,4 @@ dependencies = [
 packages = []
 
 [dependency-groups]
-dev = [
-    "jupyter-ruff>=0.3.0",
-    "jupyterlab==4.4.9",
- "jupytext==1.17.3",
-]
+dev = ["jupyter-ruff>=0.3.0", "jupyterlab==4.4.9", "jupytext==1.17.3"]
