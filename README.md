@@ -3,10 +3,7 @@
 <img src="book/images/heftie_logo.svg" alt="HEFTIE logo" width="100"/>
 
 A digital textbook for working with huge 3D imaging datasets
-
-> [!WARNING]
-> This book is still a work in progress - it might not make complete sense yet!
-> Feedback is very welcome, by [opening an issue](https://github.com/HEFTIEProject/heftie-textbook/issues/new) on our GitHub issue tracker.
+Feedback is very welcome, by [opening an issue](https://github.com/HEFTIEProject/heftie-textbook/issues/new) on our GitHub issue tracker.
 
 ## Contributing
 
@@ -22,7 +19,7 @@ This command will print a link that can be opened in a web browser to preview th
 
 To develop the book, it's recommended to use `uv`.
 Run `uv run jupyter lab` to start Jupyter, and then navigate to the `book` directory.
-Then right-click on one of the chapter's `.md` files and select "Open With" > "Jupytext Notebook". 
+Then right-click on one of the chapter's `.md` files and select "Open With" > "Jupytext Notebook".
 All cells can be edited / run directly in this interface.
 
 ## Funding
