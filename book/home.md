@@ -33,7 +33,7 @@ It is not designed to have hands-on examples, and should complement other resour
 
 ### Running code
 
-It's not necessary to run the code while reading, but if you want to...
+It's not necessary to run the code while reading, but if you want to you can [download the Python requirements](https://raw.githubusercontent.com/HEFTIEProject/heftie-textbook/refs/heads/main/requirements.txt) used to generate the output in this book, and use them to create a fresh Python environment.
 
 ## Acknowledgements
 
