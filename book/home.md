@@ -39,7 +39,5 @@ It's not necessary to run the code while reading, but if you want to...
 
 This book is part of the Handling Enormous Files from Tomographic Imaging Experiments (HEFTIE) project.
 HEFTIE is funded by the [OSCARS project](https://oscars-project.eu/), which has received funding from the European Commission’s Horizon Europe Research and Innovation programme under grant agreement No. 101129751.
-
-![OSCARS and EU logos](images/OSCARS-logo-EUflag.png)
-
 Thanks to Alessandro Felder for reviewing and providing helpful improvements and comments.
+![OSCARS and EU logos](images/OSCARS-logo-EUflag.png)
