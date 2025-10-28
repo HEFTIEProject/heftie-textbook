@@ -1,43 +1,39 @@
 # Handling Enormous Files from 3D Imaging Experiments
 
-Welcome to the textbook for working with huge 3D imaging datasets using modern data formats!
+This book tries to explain the theory and practice behind handling large bioimaging datasets using the OME-Zarr data format.
 
-## Introduction
+It is written for anyone working with bioimaging data that is 'big'.
+This means too big to transfer the data quickly from where it's stored to where you need it in one go.
+This can include downloading it over the internet for viewing, or loading it from your hard drive into memory for analysis.
 
-Modern imaging datasets are big - really big!
-As an example, the [Human Organ Atlas](https://human-organ-atlas.esrf.fr/) routinely generates datasets that are > 500 GB in size.
-For the average scientist, these datasets are too big to load into the available memory on their computer at once, raising the question: **how can we analyse huge imaging datasets**?
+The tools and methods in this texbook are tailored to working with big imaging data.
+Tackling this data adds complexity to the tools and methods, so if you have smaller data it might be easier tot you use other file formats and tools.
+See the [Introduction to Bioimage Analysis textbook](https://bioimagebook.github.io) for other options.
 
-The key to answering this question comes in two parts:
-
-1. Breaking down images into smaller files, or 'chunks' that are small enough to individually fit in memory.
-2. Creating a series of downsampled versions of datasets, so it's possible to view a low resolution version of the whole dataset, but still zoom in and load high resolution regions of interest.
-
-## Using this textbook
+## Using this book
 
 ### Pre-requisites
 
-This textbook assumes some familiarity with images and basic Python programming.
+This textbook assumes some familiarity with images.
+The practical examples in this textbook are written in the Python programming language.
+The first two chapters give theoretical background and code is only used to explain concepts
+The later chapters expain the practice of working with OME-Zarr datasets and contain code that you could copy and adapt for your own use.
 The [Introduction to Bioimage Analysis textbook](https://bioimagebook.github.io) has a good primer on images in the context of both Python and Biology.
 
-The tools and methods in this texbook are tailored to working with big imaging data.
-As a rule of thumb this means data that that you cannot load entirely into memory at once, because it is so big.
-Tackling this data adds complexity to the tools and methods, so if you have smaller data it's recommended that you use other file formats and tools.
-See the [Introduction to Bioimage Analysis textbook](https://bioimagebook.github.io) for other options.
+### Reading the book
 
-### Reading the textbook
-
-Every chapter is designed to be read from start to end in one sitting.
+Every chapter is designed to be read from start to end in a linear fashion.
 Each chapter builds upon the previous ones, so they should be read in order.
 It is not designed to have hands-on examples, and should complement other resources that provide interactive lessons, such as the [OME-Zarr lesson in the Bioimage Analysis Training Resources](https://neubias.github.io/training-resources/ome_zarr/index.html).
+Some of the code examples provided to explain concepts might be a useful starting point for writing your own data management and analysis code.
 
 ### Running code
 
-It's not necessary to run the code while reading, but if you want to you can [download the Python requirements](https://raw.githubusercontent.com/HEFTIEProject/heftie-textbook/refs/heads/main/requirements.txt) used to generate the output in this book, and use them to create a fresh Python environment.
+If you want to you can [download the Python requirements](https://raw.githubusercontent.com/HEFTIEProject/heftie-textbook/refs/heads/main/requirements.txt) used to generate the output in this book, and use them to create a fresh Python environment.
 
 ## Acknowledgements
 
-This book is part of the Handling Enormous Files from Tomographic Imaging Experiments (HEFTIE) project.
+The creation of this book was funded by the Handling Enormous Files from Tomographic Imaging Experiments (HEFTIE) project.
 HEFTIE is funded by the [OSCARS project](https://oscars-project.eu/), which has received funding from the European Commission’s Horizon Europe Research and Innovation programme under grant agreement No. 101129751.
 ![OSCARS and EU logos](images/OSCARS-logo-EUflag.png)
 Thanks to Alessandro Felder for reviewing and providing helpful improvements and comments.
