@@ -17,7 +17,7 @@ See the [Introduction to Bioimage Analysis textbook](https://bioimagebook.github
 This textbook assumes some familiarity with images.
 The practical examples in this textbook are written in the Python programming language.
 The first two chapters give theoretical background and code is only used to explain concepts
-The later chapters expain the practice of working with OME-Zarr datasets and contain code that you could copy and adapt for your own use.
+The later chapters explain the practice of working with OME-Zarr datasets and contain code that you could copy and adapt for your own use.
 The [Introduction to Bioimage Analysis textbook](https://bioimagebook.github.io) has a good primer on images in the context of both Python and Biology.
 
 ### Reading the book
