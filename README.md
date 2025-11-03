@@ -1,5 +1,5 @@
 > [!NOTE]
-> This respository is now archived, but the textbook lives on at https://github.com/ome-zarr-models/ome-zarr-book
+> This repository is now archived, but the textbook lives on at https://github.com/ome-zarr-models/ome-zarr-book
 
 # heftie-textbook
 
