@@ -14,6 +14,10 @@ authors:
   - id: dstansby
 ---
 
+:::{note}
+The HEFTIE textbook has moved to https://ome-zarr-book.readthedocs.io
+:::
+
 # Data formats
 
 This chapter gives an overview of how image data is stored on a computer, and the challenges of storing and using huge 3D imaging data.

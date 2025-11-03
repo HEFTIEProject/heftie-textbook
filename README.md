@@ -1,3 +1,6 @@
+> [!NOTE]
+> This repository is now archived, but the textbook lives on at https://github.com/ome-zarr-models/ome-zarr-book
+
 # heftie-textbook
 
 <img src="book/images/heftie_logo.svg" alt="HEFTIE logo" width="100"/>

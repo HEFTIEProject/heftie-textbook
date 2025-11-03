@@ -14,6 +14,10 @@ authors:
   - id: dstansby
 ---
 
+:::{note}
+The HEFTIE textbook has moved to https://ome-zarr-book.readthedocs.io
+:::
+
 # Creating chunked datasets
 
 +++

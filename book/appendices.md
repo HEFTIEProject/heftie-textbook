@@ -14,6 +14,10 @@ authors:
   - id: dstansby
 ---
 
+:::{note}
+The HEFTIE textbook has moved to https://ome-zarr-book.readthedocs.io
+:::
+
 # Appendices
 
 ## OME-Zarr creation libraries
@@ -35,6 +39,7 @@ There are many different viewers available for OME-Zarr images - see a full [lis
 A good Python-based option is [`napari`](https://napari.org/stable/) - see [installation instructions](https://napari.org/stable/tutorials/fundamentals/installation.html#napari-installation) on their website.
 
 By default, `napari` supports opening Zarr arrays e.g.
+
 ```python
 import napari
 

@@ -15,6 +15,10 @@ authors:
   - id: ruaridhg
 ---
 
+:::{note}
+The HEFTIE textbook has moved to https://ome-zarr-book.readthedocs.io
+:::
+
 # Exporting
 
 In this chapter we'll look at how to convert sub-volumes of 3D Zarr images to other file formats.
