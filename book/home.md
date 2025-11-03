@@ -1,3 +1,7 @@
+:::{note}
+The HEFTIE textbook has moved to https://ome-zarr-book.readthedocs.io
+:::
+
 # Handling Enormous Files from 3D Imaging Experiments
 
 This book tries to explain the theory and practice behind handling large bioimaging datasets using the OME-Zarr data format.
